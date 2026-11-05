@@ -302,7 +302,7 @@ export function initCreationsEngine() {
     const cached = localStorage.getItem('portfolio_creations');
     if (cached) {
       const parsed = JSON.parse(cached);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         creationsList = parsed;
         renderAllRubriques(creationsList);
       }
@@ -313,7 +313,10 @@ export function initCreationsEngine() {
 
   // B. Fetch fresh creations from backend API (Cache-Busting)
   fetch('/api/creations?t=' + Date.now(), { cache: 'no-store' })
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
     .then(data => {
       if (Array.isArray(data)) {
         creationsList = data;
@@ -327,7 +330,17 @@ export function initCreationsEngine() {
       console.warn('[Creations Engine] API fetch error:', err);
     });
 
-  // Cross-tab synchronization with Admin CMS
+  // Cross-tab synchronization with Admin CMS (StorageEvent + BroadcastChannel)
+  try {
+    const channel = new BroadcastChannel('portfolio_sync');
+    channel.onmessage = (msg) => {
+      if (msg.data && msg.data.type === 'creations_updated' && Array.isArray(msg.data.items)) {
+        creationsList = msg.data.items;
+        renderAllRubriques(creationsList);
+      }
+    };
+  } catch (e) {}
+
   window.addEventListener('storage', (e) => {
     if (!e.key || e.key === 'portfolio_creations') {
       try {

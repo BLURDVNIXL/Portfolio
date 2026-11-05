@@ -291,12 +291,15 @@
 
     <!-- TAB 1: CREATIONS -->
     <section id="tab-creations" class="panel-section active">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
         <div>
           <h2 style="font-size:1.6rem; font-family:var(--font-display);">Liste de vos créations</h2>
           <p style="font-size:0.9rem; color:var(--muted);">Ajoutez, modifiez ou supprimez vos vidéos YouTube, affiches et applications.</p>
         </div>
-        <button type="button" id="btn-add-creation" class="btn-admin btn-admin-primary">+ Nouvelle Création</button>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button type="button" id="btn-clear-all-creations" class="btn-admin btn-admin-danger" style="font-size:12px; padding:8px 16px;">Vider tous les projets</button>
+          <button type="button" id="btn-add-creation" class="btn-admin btn-admin-primary">+ Nouvelle Création</button>
+        </div>
       </div>
 
       <div style="overflow-x:auto;">

@@ -134,18 +134,52 @@ const upload = multer({
 });
 
 // ============================================
-// ASYNCHRONOUS I/O & PERSISTENCE (VERCEL /tmp + GITHUB SYNC)
+// ASYNCHRONOUS I/O & PERSISTENCE (VERCEL /tmp + REALTIME GITHUB SYNC)
 // ============================================
+async function fetchFromGitHub(relativePath: string): Promise<any | null> {
+  if (!GITHUB_TOKEN || !GITHUB_REPO) return null;
+  try {
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${relativePath}?ref=${GITHUB_BRANCH}`;
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `token ${GITHUB_TOKEN}`,
+        'User-Agent': 'Daniel-Portfolio-CMS',
+        Accept: 'application/vnd.github.v3.raw',
+        'Cache-Control': 'no-cache'
+      }
+    });
+    if (res.ok) {
+      const text = await res.text();
+      return JSON.parse(text);
+    }
+  } catch (err: any) {
+    console.warn(`[Portfolio] Erreur fetch direct GitHub pour ${relativePath}:`, err?.message || err);
+  }
+  return null;
+}
+
 async function readJsonAsync<T>(filePath: string, fallback: T): Promise<T> {
   const baseName = path.basename(filePath);
   const tmpPath = path.join('/tmp', baseName);
+  const isCreations = baseName.includes('creations');
+  const isConfig = baseName.includes('config');
 
-  // 1. Check /tmp first (holds freshest writes in serverless environment)
+  // 1. In-memory cache for warm Lambdas
+  if (isCreations && inMemoryCreations !== null) {
+    return inMemoryCreations as unknown as T;
+  }
+  if (isConfig && inMemoryConfig !== null) {
+    return inMemoryConfig as unknown as T;
+  }
+
+  // 2. /tmp cache
   try {
     if (fs.existsSync(tmpPath)) {
       const content = await fs.promises.readFile(tmpPath, 'utf-8');
       const data = JSON.parse(content);
       if (data !== undefined && data !== null) {
+        if (isCreations) inMemoryCreations = data;
+        if (isConfig) inMemoryConfig = data;
         return data;
       }
     }
@@ -153,12 +187,26 @@ async function readJsonAsync<T>(filePath: string, fallback: T): Promise<T> {
     console.warn(`[Portfolio] Erreur lecture /tmp/${baseName}:`, err);
   }
 
-  // 2. Fall back to bundled data file
+  // 3. Real-time GitHub read (guarantees cross-instance sync across all Vercel cold starts)
+  const relativePath = isCreations ? 'data/creations.json' : 'data/config.json';
+  const ghData = await fetchFromGitHub(relativePath);
+  if (ghData !== null && ghData !== undefined) {
+    if (isCreations) inMemoryCreations = ghData;
+    if (isConfig) inMemoryConfig = ghData;
+    try {
+      await fs.promises.writeFile(tmpPath, JSON.stringify(ghData, null, 2), 'utf-8');
+    } catch {}
+    return ghData as T;
+  }
+
+  // 4. Bundled local data file (offline or local fallback)
   try {
     if (fs.existsSync(filePath)) {
       const content = await fs.promises.readFile(filePath, 'utf-8');
       const data = JSON.parse(content);
       if (data !== undefined && data !== null) {
+        if (isCreations) inMemoryCreations = data;
+        if (isConfig) inMemoryConfig = data;
         return data;
       }
     }
@@ -166,7 +214,11 @@ async function readJsonAsync<T>(filePath: string, fallback: T): Promise<T> {
     if (fs.existsSync(backupPath)) {
       const backupContent = await fs.promises.readFile(backupPath, 'utf-8');
       const backupData = JSON.parse(backupContent);
-      if (backupData) return backupData;
+      if (backupData) {
+        if (isCreations) inMemoryCreations = backupData;
+        if (isConfig) inMemoryConfig = backupData;
+        return backupData;
+      }
     }
   } catch (err) {
     console.error(`[Portfolio] Erreur lecture ${filePath}:`, err);
@@ -179,6 +231,11 @@ async function writeJsonAsync(filePath: string, data: any): Promise<void> {
   const content = JSON.stringify(data, null, 2);
   const baseName = path.basename(filePath);
   const tmpPath = path.join('/tmp', baseName);
+  const isCreations = baseName.includes('creations');
+  const isConfig = baseName.includes('config');
+
+  if (isCreations) inMemoryCreations = data;
+  if (isConfig) inMemoryConfig = data;
 
   // 1. Write to /tmp (always writable in Vercel Lambda & local environments)
   try {
@@ -196,7 +253,7 @@ async function writeJsonAsync(filePath: string, data: any): Promise<void> {
     // Expected on Vercel read-only filesystem
   }
 
-  // 3. AWAIT GitHub API Sync if token is configured
+  // 3. AWAIT GitHub API Sync
   if (GITHUB_TOKEN && GITHUB_REPO) {
     try {
       await syncToGitHub(filePath, content);
@@ -214,11 +271,12 @@ async function syncToGitHub(localFilePath: string, fileContent: string): Promise
     const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${relativePath}`;
     
     let currentSha = '';
-    const getRes = await fetch(url, {
+    const getRes = await fetch(`${url}?ref=${GITHUB_BRANCH}&t=${Date.now()}`, {
       headers: {
         Authorization: `token ${GITHUB_TOKEN}`,
         'User-Agent': 'Daniel-Portfolio-CMS',
-        Accept: 'application/vnd.github.v3+json'
+        Accept: 'application/vnd.github.v3+json',
+        'Cache-Control': 'no-cache'
       }
     });
 
@@ -228,7 +286,7 @@ async function syncToGitHub(localFilePath: string, fileContent: string): Promise
     }
 
     const contentBase64 = Buffer.from(fileContent, 'utf-8').toString('base64');
-    const putRes = await fetch(url, {
+    let putRes = await fetch(url, {
       method: 'PUT',
       headers: {
         Authorization: `token ${GITHUB_TOKEN}`,
@@ -243,6 +301,37 @@ async function syncToGitHub(localFilePath: string, fileContent: string): Promise
         sha: currentSha || undefined
       })
     });
+
+    // Conflict handling (409): re-fetch fresh SHA and retry
+    if (putRes.status === 409) {
+      console.warn(`[Portfolio] SHA en conflit pour ${relativePath}, nouvelle tentative...`);
+      const retryGet = await fetch(`${url}?ref=${GITHUB_BRANCH}&t=${Date.now()}`, {
+        headers: {
+          Authorization: `token ${GITHUB_TOKEN}`,
+          'User-Agent': 'Daniel-Portfolio-CMS',
+          Accept: 'application/vnd.github.v3+json',
+          'Cache-Control': 'no-cache'
+        }
+      });
+      if (retryGet.ok) {
+        const retryBody = (await retryGet.json()) as { sha?: string };
+        putRes = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            Authorization: `token ${GITHUB_TOKEN}`,
+            'User-Agent': 'Daniel-Portfolio-CMS',
+            Accept: 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: `cms: update ${relativePath} [skip ci]`,
+            content: contentBase64,
+            branch: GITHUB_BRANCH,
+            sha: retryBody.sha || undefined
+          })
+        });
+      }
+    }
 
     if (putRes.ok) {
       console.log(`[Portfolio] Synchronisé avec succès sur GitHub : ${relativePath}`);
@@ -532,6 +621,19 @@ apiRouter.delete('/creations/:id', requireAdmin, async (req, res) => {
   inMemoryCreations = creations;
   await writeJsonAsync(CREATIONS_FILE, creations);
   res.json({ success: true, deleted: id, count: creations.length, changed: initialLen !== creations.length });
+});
+
+// 6b. Delete All / Clear Creations (Admin only)
+apiRouter.delete('/creations', requireAdmin, async (_req, res) => {
+  inMemoryCreations = [];
+  await writeJsonAsync(CREATIONS_FILE, []);
+  res.json({ success: true, count: 0, message: 'Toutes les créations ont été supprimées.' });
+});
+
+apiRouter.post('/creations/clear', requireAdmin, async (_req, res) => {
+  inMemoryCreations = [];
+  await writeJsonAsync(CREATIONS_FILE, []);
+  res.json({ success: true, count: 0, message: 'Toutes les créations ont été supprimées.' });
 });
 
 // 7. Bulk Import Creations (Admin only)

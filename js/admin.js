@@ -262,6 +262,11 @@ function renderCreationsTable() {
         renderCreationsTable();
 
         try {
+          const channel = new BroadcastChannel('portfolio_sync');
+          channel.postMessage({ type: 'creations_updated', items: creationsList });
+        } catch (e) {}
+
+        try {
           const res = await authFetch(`/api/creations/${id}`, { method: 'DELETE' });
           if (!res.ok) {
             const errData = await res.json().catch(() => ({}));
@@ -456,11 +461,49 @@ if (formCreation) {
         localStorage.setItem('portfolio_creations', JSON.stringify(creationsList));
       } catch (e) {}
 
+      try {
+        const channel = new BroadcastChannel('portfolio_sync');
+        channel.postMessage({ type: 'creations_updated', items: creationsList });
+      } catch (e) {}
+
       renderCreationsTable();
       closeCreationModal();
       window.dispatchEvent(new Event('storage'));
     } catch (err) {
       alert('Erreur enregistrement : ' + err.message);
+    }
+  });
+}
+
+// Clear all creations handler
+const btnClearAllCreations = document.getElementById('btn-clear-all-creations');
+if (btnClearAllCreations) {
+  btnClearAllCreations.addEventListener('click', async () => {
+    if (confirm('Attention : Voulez-vous vraiment supprimer TOUTES les créations de votre portfolio ? Cette action videra complètement la liste.')) {
+      creationsList = [];
+      try {
+        localStorage.setItem('portfolio_creations', JSON.stringify([]));
+      } catch (e) {}
+      renderCreationsTable();
+
+      try {
+        const channel = new BroadcastChannel('portfolio_sync');
+        channel.postMessage({ type: 'creations_updated', items: [] });
+      } catch (e) {}
+      window.dispatchEvent(new Event('storage'));
+
+      try {
+        const res = await authFetch('/api/creations/clear', { method: 'POST' });
+        if (res.ok) {
+          alert('Toutes les créations ont été supprimées avec succès.');
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          alert('Avertissement serveur : ' + (errData.error || 'Erreur lors du vidage'));
+        }
+      } catch (err) {
+        console.error('Erreur vidage créations:', err);
+        alert('Erreur réseau : ' + err.message);
+      }
     }
   });
 }
