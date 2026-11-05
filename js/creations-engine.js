@@ -311,11 +311,11 @@ export function initCreationsEngine() {
     // ignore json cache error
   }
 
-  // B. Fetch fresh creations from backend API
-  fetch('/api/creations')
+  // B. Fetch fresh creations from backend API (Cache-Busting)
+  fetch('/api/creations?t=' + Date.now(), { cache: 'no-store' })
     .then(res => res.json())
     .then(data => {
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         creationsList = data;
         renderAllRubriques(creationsList);
         try {
@@ -326,6 +326,22 @@ export function initCreationsEngine() {
     .catch(err => {
       console.warn('[Creations Engine] API fetch error:', err);
     });
+
+  // Cross-tab synchronization with Admin CMS
+  window.addEventListener('storage', (e) => {
+    if (!e.key || e.key === 'portfolio_creations') {
+      try {
+        const cached = localStorage.getItem('portfolio_creations');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (Array.isArray(parsed)) {
+            creationsList = parsed;
+            renderAllRubriques(creationsList);
+          }
+        }
+      } catch (err) {}
+    }
+  });
 
   // Open Lightbox for a project
   function openLightboxForProject(item) {

@@ -962,13 +962,15 @@
   </main>
 
   <!-- ============ FOOTER ============ -->
-  <footer class="site-footer">
+    <footer class="site-footer">
     <div class="footer-left">
       <span>© <span id="year">2026</span> <strong>ADJIRI N’DA ÉLIE DANIEL</strong> · CPGE MPI INP-HB</span>
       <span class="footer-separator" aria-hidden="true">·</span>
       <button type="button" id="btn-open-legal" class="footer-legal-link" aria-haspopup="dialog" aria-controls="legal-modal">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="legal-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Mentions Légales & Droits (CI)
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="legal-icon" style="width:14px; height:14px; min-width:14px; min-height:14px; max-width:14px; max-height:14px; display:inline-block; vertical-align:-2px; flex-shrink:0;" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <span>Mentions Légales & Droits (CI)</span>
       </button>
     </div>
     <a class="top" href="#hero">Haut de page ↑</a>
@@ -1054,5 +1056,148 @@
     import { initPortfolioSync } from '/js/portfolio-sync.js';
     initPortfolioSync();
   </script>
+
+  <!-- ================= MODALE MENTIONS LÉGALES & CONFORMITÉ IVOIRIENNE (Lois 2013-546 & 2013-450) ================= -->
+  <div class="legal-modal" id="legal-modal" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title" style="display:none;">
+    <div class="legal-backdrop" id="legal-backdrop"></div>
+    <div class="legal-dialog">
+      <div class="legal-header">
+        <div class="legal-header-title">
+          <div class="legal-icon-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <h2 id="legal-modal-title">Conformité Légale & Propriété Intellectuelle</h2>
+            <p class="legal-header-subtitle">République de Côte d'Ivoire · Lois n° 2013-546 & 2013-450</p>
+          </div>
+        </div>
+        <button type="button" class="legal-close-btn" id="legal-close" aria-label="Fermer la fenêtre">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="legal-tabs" role="tablist">
+        <button type="button" class="legal-tab active" data-tab="tab-editor" role="tab" aria-selected="true">1. Éditeur & Hébergement</button>
+        <button type="button" class="legal-tab" data-tab="tab-privacy" role="tab" aria-selected="false">2. Données (ARTCI)</button>
+        <button type="button" class="legal-tab" data-tab="tab-ip" role="tab" aria-selected="false">3. Droits d'Auteur (BURIDA)</button>
+      </div>
+
+      <div class="legal-body">
+        <!-- TAB 1: MENTIONS LÉGALES OBLIGATOIRES -->
+        <div class="legal-tab-pane active" id="tab-editor">
+          <span class="legal-badge">Loi n° 2013-546 du 30 juillet 2013</span>
+          <h3 class="legal-section-title">1. Éditeur et Directeur de la Publication</h3>
+          <p class="legal-text">Le présent site web personnel et professionnel est édité et administré par :</p>
+          <div class="legal-card">
+            <div class="legal-field"><span class="label">Identité :</span> <span class="val"><strong>ADJIRI N’DA ÉLIE DANIEL</strong></span></div>
+            <div class="legal-field"><span class="label">Statut :</span> <span class="val">Élève en Classe Préparatoire (CPGE MPI) à l'INP-HB Yamoussoukro · Développeur Full-Stack & Créatif indépendant</span></div>
+            <div class="legal-field"><span class="label">Localisation :</span> <span class="val">Yamoussoukro / Abidjan, République de Côte d'Ivoire</span></div>
+            <div class="legal-field"><span class="label">Contact officiel :</span> <span class="val"><a href="mailto:adjirieliedaniel@gmail.com">adjirieliedaniel@gmail.com</a> · <a href="mailto:nda.adjiri25@inphb.ci">nda.adjiri25@inphb.ci</a></span></div>
+            <div class="legal-field"><span class="label">Téléphone / WhatsApp :</span> <span class="val"><a href="tel:+2250778780255">+225 07 78 78 02 55</a></span></div>
+          </div>
+
+          <h3 class="legal-section-title">2. Hébergement Technique de la Plateforme</h3>
+          <div class="legal-card">
+            <div class="legal-field"><span class="label">Prestataire :</span> <span class="val"><strong>Vercel Inc.</strong></span></div>
+            <div class="legal-field"><span class="label">Adresse du siège :</span> <span class="val">440 N Barranca Ave #4133, Covina, CA 91723, États-Unis</span></div>
+            <div class="legal-field"><span class="label">Infrastructure :</span> <span class="val">Réseau Edge CDN mondial distribué avec fonctions serverless sécurisées</span></div>
+            <div class="legal-field"><span class="label">Contact hébergeur :</span> <span class="val"><a href="mailto:privacy@vercel.com">privacy@vercel.com</a> · <a href="https://vercel.com" target="_blank" rel="noopener">https://vercel.com</a></span></div>
+          </div>
+        </div>
+
+        <!-- TAB 2: DONNÉES PERSONNELLES & ARTCI -->
+        <div class="legal-tab-pane" id="tab-privacy" style="display:none;">
+          <span class="legal-badge">Loi n° 2013-450 & Autorité ARTCI</span>
+          <h3 class="legal-section-title">Protection de la Vie Privée et Données Personnelles</h3>
+          <p class="legal-text">
+            Conformément aux dispositions de la <strong>Loi ivoirienne n° 2013-450 du 19 juin 2013</strong> relative à la protection des données à caractère personnel sous le contrôle de l'<strong>ARTCI</strong> (Autorité de Régulation des Télécommunications/TIC de Côte d'Ivoire) :
+          </p>
+          <div class="legal-card">
+            <p class="legal-text"><strong>• Aucune collecte commerciale :</strong> Ce portfolio est un site vitrine personnel à vocation artistique et technique. Aucune donnée personnelle de navigation n'est collectée, cédée, louée ni revendue à des tiers ou courtiers de données.</p>
+            <p class="legal-text"><strong>• Zéro cookie publicitaire ou traceur intrusif :</strong> Aucun cookie tiers de ciblage comportemental n'est déposé. Les vidéos et flux multimédias intégrés utilisent le mode strict de confidentialité (<code>youtube-nocookie.com</code>).</p>
+            <p class="legal-text"><strong>• Données de contact volontaires :</strong> Les coordonnées éventuellement transmises par email ou WhatsApp par les visiteurs sont uniquement utilisées pour échanger sur des opportunités de projets, de stages ou de collaborations professionnelles.</p>
+            <p class="legal-text"><strong>• Droits d'accès et de rectification :</strong> Tout visiteur dispose d'un droit permanent d'accès, d'interrogation, de rectification et de suppression des informations le concernant en écrivant simplement à : <code>adjirieliedaniel@gmail.com</code>.</p>
+          </div>
+        </div>
+
+        <!-- TAB 3: PROPRIÉTÉ INTELLECTUELLE & BURIDA -->
+        <div class="legal-tab-pane" id="tab-ip" style="display:none;">
+          <span class="legal-badge">BURIDA · OAPI · Code de la Propriété Intellectuelle</span>
+          <h3 class="legal-section-title">Droits d'Auteur, Créations et Droits Voisins</h3>
+          <p class="legal-text">
+            L'intégralité des contenus originaux figurant sur ce site est protégée par les conventions internationales de Berne et les réglementations du <strong>BURIDA</strong> (Bureau Ivoirien du Droit d'Auteur) ainsi que de l'<strong>OAPI</strong> (Organisation Africaine de la Propriété Intellectuelle) :
+          </p>
+          <div class="legal-card">
+            <p class="legal-text"><strong>• Réalisations audiovisuelles & Affiches graphiques :</strong> Tous les courts-métrages, bandes-annonces, animations graphiques, affiches événementielles et identités visuelles présentés sont la propriété intellectuelle exclusive d'<strong>Élie Daniel Adjiri</strong> et/ou des collectifs partenaires et structures dûment créditées (<em>DATA CORPORATION, Caïmans Techno 25, INP-HB</em>). Toute reproduction, diffusion publique, remixage ou exploitation commerciale sans consentement écrit préalable est formellement interdite.</p>
+            <p class="legal-text"><strong>• Code source et architecture logicielle :</strong> Le code source de l'interface, les shaders 3D Three.js, les moteurs de rendu multimédia et le système CMS sont sous licence Apache 2.0 / droits réservés de l'auteur.</p>
+            <p class="legal-text"><strong>• Musiques & Ambiance sonore :</strong> Les extraits sonores et instrumentales d'ambiance intégrés dans le lecteur audio sont diffusés selon les licences Creative Commons et libres de droits avec attribution complète des compositeurs originaux.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="legal-footer">
+        <span class="legal-footer-note">Dernière mise à jour : Novembre 2026 · INP-HB Yamoussoukro</span>
+        <button type="button" class="legal-close-action-btn" id="legal-close-action">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // Legal Modal Interaction
+    const btnOpenLegal = document.getElementById("btn-open-legal");
+    const legalModal = document.getElementById("legal-modal");
+    const legalBackdrop = document.getElementById("legal-backdrop");
+    const legalCloseBtn = document.getElementById("legal-close");
+    const legalCloseAction = document.getElementById("legal-close-action");
+    const legalTabs = document.querySelectorAll(".legal-tab");
+    const legalPanes = document.querySelectorAll(".legal-tab-pane");
+
+    function openLegalModal() {
+      if (legalModal) {
+        legalModal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+    }
+
+    function closeLegalModal() {
+      if (legalModal) {
+        legalModal.style.display = "none";
+        document.body.style.overflow = "";
+      }
+    }
+
+    if (btnOpenLegal) btnOpenLegal.addEventListener("click", openLegalModal);
+    if (legalBackdrop) legalBackdrop.addEventListener("click", closeLegalModal);
+    if (legalCloseBtn) legalCloseBtn.addEventListener("click", closeLegalModal);
+    if (legalCloseAction) legalCloseAction.addEventListener("click", closeLegalModal);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && legalModal && legalModal.style.display === "flex") {
+        closeLegalModal();
+      }
+    });
+
+    legalTabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        const target = tab.dataset.tab;
+        legalTabs.forEach(t => {
+          t.classList.remove("active");
+          t.setAttribute("aria-selected", "false");
+        });
+        legalPanes.forEach(p => {
+          p.classList.remove("active");
+          p.style.display = "none";
+        });
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+        const activePane = document.getElementById(target);
+        if (activePane) {
+          activePane.classList.add("active");
+          activePane.style.display = "block";
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>

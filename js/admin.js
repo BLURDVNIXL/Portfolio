@@ -180,22 +180,30 @@ if (audioUploadInput) {
 // Load and Render Creations in Table
 async function loadCreations() {
   try {
-    const res = await fetch('/api/creations');
-    creationsList = await res.json();
-    try {
-      localStorage.setItem('portfolio_creations', JSON.stringify(creationsList));
-    } catch (e) {}
-    renderCreationsTable();
+    const res = await fetch('/api/creations?t=' + Date.now(), { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        creationsList = data;
+        try {
+          localStorage.setItem('portfolio_creations', JSON.stringify(creationsList));
+        } catch (e) {}
+        renderCreationsTable();
+        return;
+      }
+    }
   } catch (err) {
     console.error('Erreur chargement créations:', err);
-    try {
-      const cached = localStorage.getItem('portfolio_creations');
-      if (cached) {
-        creationsList = JSON.parse(cached);
-        renderCreationsTable();
-      }
-    } catch (e) {}
   }
+
+  // Fallback to localStorage cache
+  try {
+    const cached = localStorage.getItem('portfolio_creations');
+    if (cached) {
+      creationsList = JSON.parse(cached);
+      renderCreationsTable();
+    }
+  } catch (e) {}
 }
 
 function renderCreationsTable() {
@@ -244,12 +252,27 @@ function renderCreationsTable() {
     btn.addEventListener('click', async () => {
       const id = btn.dataset.id;
       if (confirm('Voulez-vous vraiment supprimer ce projet de votre portfolio ?')) {
-        await authFetch(`/api/creations/${id}`, { method: 'DELETE' });
-        creationsList = creationsList.filter(c => c.id !== id);
+        // Optimistic UI update immediately:
+        btn.disabled = true;
+        btn.textContent = 'Suppression...';
+        creationsList = creationsList.filter(c => String(c.id) !== String(id));
         try {
           localStorage.setItem('portfolio_creations', JSON.stringify(creationsList));
         } catch (e) {}
-        loadCreations();
+        renderCreationsTable();
+
+        try {
+          const res = await authFetch(`/api/creations/${id}`, { method: 'DELETE' });
+          if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            alert('Avertissement : ' + (errData.error || 'Erreur lors de la suppression sur le serveur.'));
+          }
+          // Notify any other tabs
+          window.dispatchEvent(new Event('storage'));
+        } catch (err) {
+          console.error('Erreur suppression:', err);
+          alert('Erreur réseau lors de la suppression : ' + err.message);
+        }
       }
     });
   });
@@ -374,28 +397,24 @@ if (formCreation) {
     const id = document.getElementById('creation-id').value;
     const category = document.getElementById('creation-category').value;
     const title = document.getElementById('creation-title').value;
+    const description = document.getElementById('creation-description').value;
     const client = document.getElementById('creation-client').value;
-    const year = document.getElementById('creation-year').value;
-    const toolsStr = document.getElementById('creation-tools').value;
-    const description = document.getElementById('creation-desc').value;
-
-    const tools = toolsStr.split(',').map(s => s.trim()).filter(Boolean);
+    const year = parseInt(document.getElementById('creation-year').value) || 2026;
+    const tools = document.getElementById('creation-tools').value.split(',').map(s => s.trim()).filter(Boolean);
 
     const payload = {
       category,
       title,
+      description,
       client,
       year,
-      description,
-      tools: category !== 'application' ? tools : tools,
-      stack: category === 'application' ? tools : undefined
+      tools,
+      tags: tools
     };
 
     if (category === 'video') {
-      const yt = document.getElementById('creation-youtube').value;
-      payload.youtubeUrl = yt;
-      payload.youtubeId = extractYouTubeId(yt);
-      payload.duration = document.getElementById('creation-duration').value;
+      payload.youtubeUrl = document.getElementById('creation-video-url').value;
+      payload.posterUrl = document.getElementById('creation-video-poster').value;
     } else if (category === 'images' || category === 'poster') {
       payload.imageUrl = document.getElementById('creation-image-url').value;
       payload.posterUrl = payload.imageUrl;
@@ -407,21 +426,39 @@ if (formCreation) {
     }
 
     try {
+      let savedCreation = null;
       if (id) {
-        await authFetch(`/api/creations/${id}`, {
+        const res = await authFetch(`/api/creations/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+        const data = await res.json();
+        savedCreation = data.creation || { ...payload, id };
+        const idx = creationsList.findIndex(c => String(c.id) === String(id));
+        if (idx !== -1) {
+          creationsList[idx] = savedCreation;
+        } else {
+          creationsList.unshift(savedCreation);
+        }
       } else {
-        await authFetch('/api/creations', {
+        const res = await authFetch('/api/creations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+        const data = await res.json();
+        savedCreation = data.creation || { ...payload, id: 'project-' + Date.now() };
+        creationsList.unshift(savedCreation);
       }
+
+      try {
+        localStorage.setItem('portfolio_creations', JSON.stringify(creationsList));
+      } catch (e) {}
+
+      renderCreationsTable();
       closeCreationModal();
-      loadCreations();
+      window.dispatchEvent(new Event('storage'));
     } catch (err) {
       alert('Erreur enregistrement : ' + err.message);
     }

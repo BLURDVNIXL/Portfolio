@@ -48,7 +48,7 @@ try {
 } catch {}
 
 // GitHub configuration for Vercel persistence
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
+const GITHUB_TOKEN = (process.env.GITHUB_TOKEN || "").trim();
 const GITHUB_REPO = process.env.GITHUB_REPO || 'BLURDVNIXL/Portfolio';
 const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 
@@ -57,91 +57,31 @@ let inMemoryCreations: any[] | null = null;
 let inMemoryConfig: any = null;
 
 // ============================================
-// SECURITY HEADERS & BODY PARSING
-// ============================================
-app.use((_req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff');
-  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-  res.setHeader('X-XSS-Protection', '1; mode=block');
-  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  next();
-});
-
-app.use(express.json({ limit: '5mb' }));
-app.use(express.urlencoded({ extended: true, limit: '5mb' }));
-
-// Serve uploads if directory exists
-try {
-  app.use('/uploads', express.static(UPLOADS_DIR));
-} catch {}
-
-// ============================================
-// STRICT MULTER UPLOAD WHITELIST
-// ============================================
-const ALLOWED_MIME_TYPES = new Set([
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp',
-  'audio/mpeg',
-  'audio/mp3',
-  'audio/wav',
-  'video/mp4',
-  'video/webm',
-  'application/pdf'
-]);
-
-const ALLOWED_EXTENSIONS = new Set([
-  '.jpg',
-  '.jpeg',
-  '.png',
-  '.webp',
-  '.mp3',
-  '.wav',
-  '.mp4',
-  '.webm',
-  '.pdf'
-]);
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
-    cb(null, UPLOADS_DIR);
-  },
-  filename: (_req, file, cb) => {
-    const rawExt = path.extname(file.originalname).toLowerCase();
-    const ext = ALLOWED_EXTENSIONS.has(rawExt) ? rawExt : '.bin';
-    const cleanName = path
-      .basename(file.originalname, rawExt)
-      .toLowerCase()
-      .replace(/[^a-z0-9_-]/g, '-');
-    const unique = Date.now() + '-' + Math.round(Math.random() * 1e5);
-    cb(null, `${cleanName}-${unique}${ext}`);
-  }
-});
-
-const upload = multer({
-  storage,
-  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB max
-  fileFilter: (_req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    if (ALLOWED_MIME_TYPES.has(file.mimetype) && ALLOWED_EXTENSIONS.has(ext)) {
-      cb(null, true);
-    } else {
-      cb(new Error(`Format non autorisé (${file.mimetype}). Formats acceptés : JPG, PNG, WEBP, MP3, MP4, PDF.`));
-    }
-  }
-});
-
-// ============================================
-// ASYNCHRONOUS I/O & PERSISTENCE
+// ASYNCHRONOUS I/O & PERSISTENCE (VERCEL /tmp + GITHUB RESILIENT SYNC)
 // ============================================
 async function readJsonAsync<T>(filePath: string, fallback: T): Promise<T> {
+  const baseName = path.basename(filePath);
+  const tmpPath = path.join('/tmp', baseName);
+
+  // 1. Check /tmp first (holds freshest writes in serverless environment)
+  try {
+    if (fs.existsSync(tmpPath)) {
+      const content = await fs.promises.readFile(tmpPath, 'utf-8');
+      const data = JSON.parse(content);
+      if (data !== undefined && data !== null) {
+        return data;
+      }
+    }
+  } catch (err) {
+    console.warn(`[Portfolio] Erreur lecture /tmp/${baseName}:`, err);
+  }
+
+  // 2. Fall back to bundled data file
   try {
     if (fs.existsSync(filePath)) {
       const content = await fs.promises.readFile(filePath, 'utf-8');
       const data = JSON.parse(content);
-      if (data && (Array.isArray(data) ? data.length > 0 : Object.keys(data).length > 0)) {
+      if (data !== undefined && data !== null) {
         return data;
       }
     }
@@ -154,24 +94,38 @@ async function readJsonAsync<T>(filePath: string, fallback: T): Promise<T> {
   } catch (err) {
     console.error(`[Portfolio] Erreur lecture ${filePath}:`, err);
   }
+
   return fallback;
 }
 
 async function writeJsonAsync(filePath: string, data: any): Promise<void> {
   const content = JSON.stringify(data, null, 2);
+  const baseName = path.basename(filePath);
+  const tmpPath = path.join('/tmp', baseName);
+
+  // 1. Write to /tmp (always writable in Vercel Lambda & local environments)
+  try {
+    await fs.promises.writeFile(tmpPath, content, 'utf-8');
+  } catch (err) {
+    console.warn(`[Portfolio] Erreur écriture /tmp pour ${tmpPath}:`, err);
+  }
+
+  // 2. Write to project data path if writable
   try {
     await fs.promises.writeFile(filePath, content, 'utf-8');
     const backupPath = filePath.replace('.json', '.backup.json');
     await fs.promises.writeFile(backupPath, content, 'utf-8');
   } catch (err) {
-    console.warn(`[Portfolio] Écriture disque lecture-seule ou différée pour ${filePath}`);
+    // Expected on Vercel read-only filesystem
   }
 
-  // GitHub API Sync
+  // 3. AWAIT GitHub API Sync so it doesn't freeze when lambda halts
   if (GITHUB_TOKEN && GITHUB_REPO) {
-    syncToGitHub(filePath, content).catch((err) => {
+    try {
+      await syncToGitHub(filePath, content);
+    } catch (err: any) {
       console.warn(`[Portfolio] Sync GitHub échouée pour ${filePath}:`, err?.message || err);
-    });
+    }
   }
 }
 
@@ -181,7 +135,7 @@ async function syncToGitHub(localFilePath: string, fileContent: string): Promise
       ? 'data/creations.json'
       : 'data/config.json';
     const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/${relativePath}`;
-
+    
     let currentSha = '';
     const getRes = await fetch(url, {
       headers: {
@@ -190,6 +144,7 @@ async function syncToGitHub(localFilePath: string, fileContent: string): Promise
         Accept: 'application/vnd.github.v3+json'
       }
     });
+
     if (getRes.ok) {
       const body = (await getRes.json()) as { sha?: string };
       currentSha = body.sha || '';
@@ -211,8 +166,12 @@ async function syncToGitHub(localFilePath: string, fileContent: string): Promise
         sha: currentSha || undefined
       })
     });
+
     if (putRes.ok) {
       console.log(`[Portfolio] Synchronisé avec succès sur GitHub : ${relativePath}`);
+    } else {
+      const errText = await putRes.text();
+      console.warn(`[Portfolio] Erreur API GitHub (${putRes.status}): ${errText}`);
     }
   } catch (err: any) {
     console.warn('[Portfolio] Erreur synchronisation GitHub:', err.message);
@@ -452,19 +411,19 @@ apiRouter.post('/media/preview', (req, res) => {
   res.json({ success: true, preview });
 });
 
-// 3. Get Creations (Public)
+// 3. Get Creations (Public - No-Cache)
 apiRouter.get('/creations', async (_req, res) => {
-  if (inMemoryCreations) {
-    return res.json(inMemoryCreations);
-  }
-  const creations = await readJsonAsync<any[]>(CREATIONS_FILE, []);
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  const creations = await readJsonAsync<any[]>(CREATIONS_FILE, inMemoryCreations || []);
   inMemoryCreations = creations;
   res.json(creations);
 });
 
 // 4. Add Creation (Admin only)
 apiRouter.post('/creations', requireAdmin, async (req, res) => {
-  const creations = inMemoryCreations || (await readJsonAsync<any[]>(CREATIONS_FILE, []));
+  let creations = await readJsonAsync<any[]>(CREATIONS_FILE, inMemoryCreations || []);
   const newCreation = {
     ...req.body,
     id: req.body.id || 'project-' + Date.now(),
@@ -479,8 +438,8 @@ apiRouter.post('/creations', requireAdmin, async (req, res) => {
 // 5. Update Creation (Admin only)
 apiRouter.put('/creations/:id', requireAdmin, async (req, res) => {
   const { id } = req.params;
-  const creations = inMemoryCreations || (await readJsonAsync<any[]>(CREATIONS_FILE, []));
-  const index = creations.findIndex((c: any) => c.id === id);
+  let creations = await readJsonAsync<any[]>(CREATIONS_FILE, inMemoryCreations || []);
+  const index = creations.findIndex((c: any) => String(c.id) === String(id));
   if (index === -1) {
     return res.status(404).json({ error: 'Projet introuvable' });
   }
@@ -493,11 +452,12 @@ apiRouter.put('/creations/:id', requireAdmin, async (req, res) => {
 // 6. Delete Creation (Admin only)
 apiRouter.delete('/creations/:id', requireAdmin, async (req, res) => {
   const { id } = req.params;
-  let creations = inMemoryCreations || (await readJsonAsync<any[]>(CREATIONS_FILE, []));
-  creations = creations.filter((c: any) => c.id !== id);
+  let creations = await readJsonAsync<any[]>(CREATIONS_FILE, inMemoryCreations || []);
+  const initialLen = creations.length;
+  creations = creations.filter((c: any) => String(c.id) !== String(id));
   inMemoryCreations = creations;
   await writeJsonAsync(CREATIONS_FILE, creations);
-  res.json({ success: true });
+  res.json({ success: true, deleted: id, count: creations.length, changed: initialLen !== creations.length });
 });
 
 // 7. Bulk Import Creations (Admin only)
@@ -511,9 +471,12 @@ apiRouter.post('/creations/import', requireAdmin, async (req, res) => {
   res.json({ success: true, count: creations.length });
 });
 
-// 8. Get Config (Public)
+// 8. Get Config (Public - No-Cache)
 apiRouter.get('/config', async (_req, res) => {
-  const config = inMemoryConfig || (await readJsonAsync<any>(CONFIG_FILE, {}));
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  const config = await readJsonAsync<any>(CONFIG_FILE, inMemoryConfig || {});
   inMemoryConfig = config;
   const { adminPasscode, ...safeConfig } = config;
   res.json(safeConfig);
