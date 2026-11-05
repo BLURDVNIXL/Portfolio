@@ -37,7 +37,7 @@
     ]
   },
   "profile": {
-    "heroTagline": "Élève",
+    "heroTagline": "Élève en MPI à l'INPHB",
     "heroTitle": "Code, design, création.",
     "heroSubtitle": "ADJIRI N’DA ÉLIE DANIEL",
     "heroBio": "Je construis des expériences qui vivent.",
@@ -123,5 +123,6 @@
         "items": "Français (maternelle) · Anglais"
       }
     ]
-  }
+  },
+  "test": "ok"
 }
