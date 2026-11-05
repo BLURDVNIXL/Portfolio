@@ -63,6 +63,8 @@ app.use((_req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   next();
 });
 
@@ -418,10 +420,18 @@ apiRouter.post('/admin/login', async (req, res) => {
     return res.status(400).json({ error: 'Code d’accès requis.' });
   }
 
-  const config = inMemoryConfig || (await readJsonAsync(CONFIG_FILE, { adminPasscode: 'daniel2026' }));
-  const configuredPasscode = process.env.ADMIN_PASSCODE || config.adminPasscode || 'daniel2026';
+  const configuredPasscode = (process.env.ADMIN_PASSCODE || '').trim();
 
-  const isValid = safeCompare(passcode.trim(), configuredPasscode.trim());
+  // Fail-closed security: If ADMIN_PASSCODE is not defined in environment, deny all login attempts
+  if (!configuredPasscode) {
+    recordLoginAttempt(ip, false);
+    console.warn(`[Security] Connexion refusée : la variable d\x27environnement ADMIN_PASSCODE n\x27est pas définie.`);
+    return res.status(401).json({
+      error: "Accès non configuré : la variable ADMIN_PASSCODE doit être définie dans l\x27environnement du serveur (Vercel)."
+    });
+  }
+
+  const isValid = safeCompare(passcode.trim(), configuredPasscode);
   if (isValid) {
     recordLoginAttempt(ip, true);
     const token = generateToken('admin');
