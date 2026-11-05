@@ -399,13 +399,18 @@ if (btnCancelCreation) btnCancelCreation.addEventListener('click', closeCreation
 if (formCreation) {
   formCreation.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const id = document.getElementById('creation-id').value;
-    const category = document.getElementById('creation-category').value;
-    const title = document.getElementById('creation-title').value;
-    const description = document.getElementById('creation-description').value;
-    const client = document.getElementById('creation-client').value;
-    const year = parseInt(document.getElementById('creation-year').value) || 2026;
-    const tools = document.getElementById('creation-tools').value.split(',').map(s => s.trim()).filter(Boolean);
+    const id = document.getElementById('creation-id')?.value || '';
+    const category = document.getElementById('creation-category')?.value || 'video';
+    const title = (document.getElementById('creation-title')?.value || '').trim();
+    const description = ((document.getElementById('creation-desc') || document.getElementById('creation-description'))?.value || '').trim();
+    const client = (document.getElementById('creation-client')?.value || '').trim();
+    const year = parseInt(document.getElementById('creation-year')?.value) || 2026;
+    const tools = (document.getElementById('creation-tools')?.value || '').split(',').map(s => s.trim()).filter(Boolean);
+
+    if (!title) {
+      alert('Veuillez renseigner un titre pour votre création.');
+      return;
+    }
 
     const payload = {
       category,
@@ -418,16 +423,24 @@ if (formCreation) {
     };
 
     if (category === 'video') {
-      payload.youtubeUrl = document.getElementById('creation-video-url').value;
-      payload.posterUrl = document.getElementById('creation-video-poster').value;
+      payload.youtubeUrl = ((document.getElementById('creation-youtube') || document.getElementById('creation-video-url'))?.value || '').trim();
+      payload.duration = (document.getElementById('creation-duration')?.value || '').trim();
+      payload.posterUrl = (document.getElementById('creation-video-poster')?.value || '').trim();
     } else if (category === 'images' || category === 'poster') {
-      payload.imageUrl = document.getElementById('creation-image-url').value;
+      payload.imageUrl = (document.getElementById('creation-image-url')?.value || '').trim();
       payload.posterUrl = payload.imageUrl;
-      payload.format = document.getElementById('creation-format').value;
+      payload.format = (document.getElementById('creation-format')?.value || '').trim();
     } else if (category === 'demo' || category === 'autres' || category === 'application') {
-      payload.demoPhotoUrl = document.getElementById('creation-app-photo').value;
-      payload.liveUrl = document.getElementById('creation-live-url').value;
-      payload.githubUrl = document.getElementById('creation-github-url').value;
+      payload.demoPhotoUrl = (document.getElementById('creation-app-photo')?.value || '').trim();
+      payload.liveUrl = (document.getElementById('creation-live-url')?.value || '').trim();
+      payload.githubUrl = (document.getElementById('creation-github-url')?.value || '').trim();
+    }
+
+    const submitBtn = formCreation.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn ? submitBtn.textContent : 'Sauvegarder la création';
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enregistrement en cours...';
     }
 
     try {
@@ -438,6 +451,10 @@ if (formCreation) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || `Erreur serveur (${res.status})`);
+        }
         const data = await res.json();
         savedCreation = data.creation || { ...payload, id };
         const idx = creationsList.findIndex(c => String(c.id) === String(id));
@@ -452,6 +469,10 @@ if (formCreation) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || `Erreur serveur (${res.status})`);
+        }
         const data = await res.json();
         savedCreation = data.creation || { ...payload, id: 'project-' + Date.now() };
         creationsList.unshift(savedCreation);
@@ -470,7 +491,13 @@ if (formCreation) {
       closeCreationModal();
       window.dispatchEvent(new Event('storage'));
     } catch (err) {
+      console.error('Erreur enregistrement:', err);
       alert('Erreur enregistrement : ' + err.message);
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+      }
     }
   });
 }

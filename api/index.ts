@@ -587,8 +587,11 @@ apiRouter.get('/creations', async (_req, res) => {
 // 4. Add Creation (Admin only)
 apiRouter.post('/creations', requireAdmin, async (req, res) => {
   let creations = await readJsonAsync<any[]>(CREATIONS_FILE, inMemoryCreations || []);
+  const media = req.body.youtubeUrl ? resolveMediaInfo(req.body.youtubeUrl) : null;
   const newCreation = {
     ...req.body,
+    youtubeId: req.body.youtubeId || (media?.type === 'youtube' ? media.id : undefined),
+    posterUrl: req.body.posterUrl || (media?.directThumbnailUrl ? media.directThumbnailUrl : undefined),
     id: req.body.id || 'project-' + Date.now(),
     createdAt: new Date().toISOString()
   };
@@ -606,7 +609,14 @@ apiRouter.put('/creations/:id', requireAdmin, async (req, res) => {
   if (index === -1) {
     return res.status(404).json({ error: 'Projet introuvable' });
   }
-  creations[index] = { ...creations[index], ...req.body, updatedAt: new Date().toISOString() };
+  const media = req.body.youtubeUrl ? resolveMediaInfo(req.body.youtubeUrl) : null;
+  creations[index] = {
+    ...creations[index],
+    ...req.body,
+    youtubeId: req.body.youtubeId || (media?.type === 'youtube' ? media.id : creations[index].youtubeId),
+    posterUrl: req.body.posterUrl || (media?.directThumbnailUrl ? media.directThumbnailUrl : creations[index].posterUrl),
+    updatedAt: new Date().toISOString()
+  };
   inMemoryCreations = creations;
   await writeJsonAsync(CREATIONS_FILE, creations);
   res.json({ success: true, creation: creations[index] });
