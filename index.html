@@ -966,7 +966,7 @@
     <div class="footer-left">
       <span>© <span id="year">2026</span> <strong>ADJIRI N’DA ÉLIE DANIEL</strong> · CPGE MPI INP-HB</span>
       <span class="footer-separator" aria-hidden="true">·</span>
-      <button type="button" id="btn-open-legal" class="footer-legal-link" aria-haspopup="dialog" aria-controls="legal-modal">
+      <button type="button" id="btn-open-legal" class="footer-legal-link" onclick="window.openLegalModal && window.openLegalModal(event)" aria-haspopup="dialog" aria-controls="legal-modal">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="legal-icon" style="width:14px; height:14px; min-width:14px; min-height:14px; max-width:14px; max-height:14px; display:inline-block; vertical-align:-2px; flex-shrink:0;" aria-hidden="true">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
         </svg>
@@ -1058,8 +1058,8 @@
   </script>
 
   <!-- ================= MODALE MENTIONS LÉGALES & CONFORMITÉ IVOIRIENNE (Lois 2013-546 & 2013-450) ================= -->
-  <div class="legal-modal" id="legal-modal" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title" style="display:none;">
-    <div class="legal-backdrop" id="legal-backdrop"></div>
+  <div class="legal-modal" id="legal-modal" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title" aria-hidden="true">
+    <div class="legal-backdrop" id="legal-backdrop" onclick="window.closeLegalModal && window.closeLegalModal(event)"></div>
     <div class="legal-dialog">
       <div class="legal-header">
         <div class="legal-header-title">
@@ -1071,8 +1071,8 @@
             <p class="legal-header-subtitle">République de Côte d'Ivoire · Lois n° 2013-546 & 2013-450</p>
           </div>
         </div>
-        <button type="button" class="legal-close-btn" id="legal-close" aria-label="Fermer la fenêtre">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <button type="button" class="legal-close-btn" id="legal-close" onclick="window.closeLegalModal && window.closeLegalModal(event)" aria-label="Fermer la fenêtre" title="Fermer (Échap)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
 
@@ -1137,7 +1137,7 @@
 
       <div class="legal-footer">
         <span class="legal-footer-note">Dernière mise à jour : Novembre 2026 · INP-HB Yamoussoukro</span>
-        <button type="button" class="legal-close-action-btn" id="legal-close-action">Fermer</button>
+        <button type="button" class="legal-close-action-btn" id="legal-close-action" onclick="window.closeLegalModal && window.closeLegalModal(event)" aria-label="Fermer les mentions légales">Fermer</button>
       </div>
     </div>
   </div>
@@ -1152,28 +1152,59 @@
     const legalTabs = document.querySelectorAll(".legal-tab");
     const legalPanes = document.querySelectorAll(".legal-tab-pane");
 
-    function openLegalModal() {
+    function openLegalModal(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       if (legalModal) {
-        legalModal.style.display = "flex";
+        legalModal.classList.add("active");
+        legalModal.classList.add("is-open");
+        legalModal.setAttribute("aria-hidden", "false");
         document.body.style.overflow = "hidden";
       }
     }
 
-    function closeLegalModal() {
+    function closeLegalModal(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       if (legalModal) {
-        legalModal.style.display = "none";
+        legalModal.classList.remove("active");
+        legalModal.classList.remove("is-open");
+        legalModal.setAttribute("aria-hidden", "true");
         document.body.style.overflow = "";
       }
     }
 
-    if (btnOpenLegal) btnOpenLegal.addEventListener("click", openLegalModal);
-    if (legalBackdrop) legalBackdrop.addEventListener("click", closeLegalModal);
-    if (legalCloseBtn) legalCloseBtn.addEventListener("click", closeLegalModal);
-    if (legalCloseAction) legalCloseAction.addEventListener("click", closeLegalModal);
+    // Expose on window for direct HTML onclick triggers
+    window.openLegalModal = openLegalModal;
+    window.closeLegalModal = closeLegalModal;
+
+    if (btnOpenLegal) {
+      btnOpenLegal.addEventListener("click", openLegalModal);
+    }
+    if (legalCloseBtn) {
+      legalCloseBtn.addEventListener("click", closeLegalModal);
+    }
+    if (legalCloseAction) {
+      legalCloseAction.addEventListener("click", closeLegalModal);
+    }
+    if (legalBackdrop) {
+      legalBackdrop.addEventListener("click", closeLegalModal);
+    }
+    if (legalModal) {
+      legalModal.addEventListener("click", (e) => {
+        if (e.target === legalModal || e.target === legalBackdrop) {
+          closeLegalModal(e);
+        }
+      });
+    }
 
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && legalModal && legalModal.style.display === "flex") {
-        closeLegalModal();
+      if (e.key === "Escape" && legalModal && (legalModal.classList.contains("active") || legalModal.classList.contains("is-open"))) {
+        closeLegalModal(e);
       }
     });
 
