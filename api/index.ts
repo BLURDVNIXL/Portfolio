@@ -48,7 +48,7 @@ try {
 } catch {}
 
 // GitHub configuration for Vercel persistence
-const GITHUB_TOKEN = (process.env.GITHUB_TOKEN || "").trim();
+const GITHUB_TOKEN = (process.env.GITHUB_TOKEN || '').trim();
 const GITHUB_REPO = process.env.GITHUB_REPO || 'BLURDVNIXL/Portfolio';
 const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
 
@@ -57,7 +57,84 @@ let inMemoryCreations: any[] | null = null;
 let inMemoryConfig: any = null;
 
 // ============================================
-// ASYNCHRONOUS I/O & PERSISTENCE (VERCEL /tmp + GITHUB RESILIENT SYNC)
+// SECURITY HEADERS & BODY PARSING
+// ============================================
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
+
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
+
+// Serve uploads if directory exists
+try {
+  app.use('/uploads', express.static(UPLOADS_DIR));
+} catch {}
+
+// ============================================
+// STRICT MULTER UPLOAD WHITELIST
+// ============================================
+const ALLOWED_MIME_TYPES = new Set([
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'audio/mpeg',
+  'audio/mp3',
+  'audio/wav',
+  'video/mp4',
+  'video/webm',
+  'application/pdf'
+]);
+
+const ALLOWED_EXTENSIONS = new Set([
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.webp',
+  '.mp3',
+  '.wav',
+  '.mp4',
+  '.webm',
+  '.pdf'
+]);
+
+const storage = multer.diskStorage({
+  destination: (_req, _file, cb) => {
+    cb(null, UPLOADS_DIR);
+  },
+  filename: (_req, file, cb) => {
+    const rawExt = path.extname(file.originalname).toLowerCase();
+    const ext = ALLOWED_EXTENSIONS.has(rawExt) ? rawExt : '.bin';
+    const cleanName = path
+      .basename(file.originalname, rawExt)
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]/g, '-');
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1e5);
+    cb(null, `${cleanName}-${unique}${ext}`);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 25 * 1024 * 1024 }, // 25MB max
+  fileFilter: (_req, file, cb) => {
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (ALLOWED_MIME_TYPES.has(file.mimetype) && ALLOWED_EXTENSIONS.has(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`Format non autorisé (${file.mimetype}). Formats acceptés : JPG, PNG, WEBP, MP3, MP4, PDF.`));
+    }
+  }
+});
+
+// ============================================
+// ASYNCHRONOUS I/O & PERSISTENCE (VERCEL /tmp + GITHUB SYNC)
 // ============================================
 async function readJsonAsync<T>(filePath: string, fallback: T): Promise<T> {
   const baseName = path.basename(filePath);
@@ -119,7 +196,7 @@ async function writeJsonAsync(filePath: string, data: any): Promise<void> {
     // Expected on Vercel read-only filesystem
   }
 
-  // 3. AWAIT GitHub API Sync so it doesn't freeze when lambda halts
+  // 3. AWAIT GitHub API Sync if token is configured
   if (GITHUB_TOKEN && GITHUB_REPO) {
     try {
       await syncToGitHub(filePath, content);
@@ -207,88 +284,85 @@ function checkRateLimit(ip: string): { allowed: boolean; waitSeconds?: number } 
   return { allowed: true };
 }
 
-function recordLoginAttempt(ip: string, success: boolean) {
+function recordLoginAttempt(ip: string, success: boolean): void {
   const now = Date.now();
+  const entry = loginAttempts.get(ip) || { count: 0, lastAttempt: now };
+
   if (success) {
     loginAttempts.delete(ip);
     return;
   }
-  const entry = loginAttempts.get(ip) || { count: 0, lastAttempt: now };
+
   entry.count += 1;
   entry.lastAttempt = now;
+
   if (entry.count >= 5) {
-    entry.lockedUntil = now + 15 * 60 * 1000;
+    entry.lockedUntil = now + 15 * 60 * 1000; // 15-minute lockout
   }
+
   loginAttempts.set(ip, entry);
 }
 
-function generateToken(role = 'admin'): string {
-  const header = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
-  const payload = Buffer.from(
-    JSON.stringify({
-      role,
-      iat: Date.now(),
-      exp: Date.now() + 24 * 60 * 60 * 1000
-    })
-  ).toString('base64url');
-  const signature = crypto
-    .createHmac('sha256', SERVER_SECRET)
-    .update(`${header}.${payload}`)
-    .digest('base64url');
-  return `${header}.${payload}.${signature}`;
+function generateToken(role: string = 'admin'): string {
+  const expiresAt = Date.now() + 8 * 60 * 60 * 1000; // 8 hours
+  const payload = `${role}:${expiresAt}`;
+  const signature = crypto.createHmac('sha256', SERVER_SECRET).update(payload).digest('hex');
+  return Buffer.from(`${payload}:${signature}`).toString('base64');
 }
 
 function verifyToken(token: string): boolean {
-  if (!token || typeof token !== 'string') return false;
-  const parts = token.split('.');
-  if (parts.length !== 3) return false;
-  const [header, payload, signature] = parts;
-  const expectedSig = crypto
-    .createHmac('sha256', SERVER_SECRET)
-    .update(`${header}.${payload}`)
-    .digest('base64url');
-  const sigBuf = Buffer.from(signature);
-  const expBuf = Buffer.from(expectedSig);
-  if (sigBuf.length !== expBuf.length || !crypto.timingSafeEqual(sigBuf, expBuf)) {
-    return false;
-  }
   try {
-    const data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf-8'));
-    if (!data.exp || Date.now() > data.exp) {
-      return false;
-    }
-    return data.role === 'admin';
+    const decoded = Buffer.from(token, 'base64').toString('utf-8');
+    const parts = decoded.split(':');
+    if (parts.length !== 3) return false;
+
+    const [role, expiresAtStr, signature] = parts;
+    const expiresAt = parseInt(expiresAtStr, 10);
+
+    if (Date.now() > expiresAt) return false;
+    if (role !== 'admin') return false;
+
+    const expectedPayload = `${role}:${expiresAt}`;
+    const expectedSig = crypto.createHmac('sha256', SERVER_SECRET).update(expectedPayload).digest('hex');
+
+    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSig));
   } catch {
     return false;
   }
 }
 
-function safeCompare(input: string, target: string): boolean {
-  if (!input || !target) return false;
-  const inputBuf = Buffer.from(input);
-  const targetBuf = Buffer.from(target);
-  if (inputBuf.length !== targetBuf.length) return false;
-  return crypto.timingSafeEqual(inputBuf, targetBuf);
+function safeCompare(a: string, b: string): boolean {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) {
+    crypto.timingSafeEqual(bufA, bufA);
+    return false;
+  }
+  return crypto.timingSafeEqual(bufA, bufB);
 }
 
 function requireAdmin(req: express.Request, res: express.Response, next: express.NextFunction) {
-  const authHeader = req.headers['authorization'] || '';
-  const token = authHeader.replace(/^Bearer\s+/i, '').trim();
-  if (verifyToken(token)) {
-    return next();
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Accès non autorisé : Token manquant.' });
   }
-  res.status(401).json({
-    error: 'Session expirée ou non autorisée. Veuillez vous reconnecter au panel administrateur.'
-  });
+
+  const token = authHeader.substring(7);
+  if (!verifyToken(token)) {
+    return res.status(403).json({ error: 'Session expirée ou invalide. Veuillez vous reconnecter.' });
+  }
+
+  next();
 }
 
 // ============================================
-// MEDIA PREVIEW RESOLVER
+// MEDIA EMBED AND PREVIEW RESOLVER
 // ============================================
 export function resolveMediaInfo(url: string) {
   if (!url || typeof url !== 'string') {
     return { type: 'unknown', url: '' };
   }
+
   const trimmed = url.trim();
 
   // 1. Google Drive Link
@@ -384,9 +458,9 @@ apiRouter.post('/admin/login', async (req, res) => {
   // Fail-closed security: If ADMIN_PASSCODE is not defined in environment, deny all login attempts
   if (!configuredPasscode) {
     recordLoginAttempt(ip, false);
-    console.warn(`[Security] Connexion refusée : la variable d\x27environnement ADMIN_PASSCODE n\x27est pas définie.`);
+    console.warn(`[Security] Connexion refusée : la variable d'environnement ADMIN_PASSCODE n'est pas définie.`);
     return res.status(401).json({
-      error: "Accès non configuré : la variable ADMIN_PASSCODE doit être définie dans l\x27environnement du serveur (Vercel)."
+      error: "Accès non configuré : la variable ADMIN_PASSCODE doit être définie dans l'environnement du serveur (Vercel)."
     });
   }
 
@@ -492,10 +566,12 @@ apiRouter.put('/config', requireAdmin, async (req, res) => {
     audio: req.body.audio ? { ...(currentConfig.audio || {}), ...req.body.audio } : currentConfig.audio,
     cv: req.body.cv ? { ...(currentConfig.cv || {}), ...req.body.cv } : currentConfig.cv
   };
+
   if (req.body.newPasscode && typeof req.body.newPasscode === 'string') {
     updatedConfig.adminPasscode = req.body.newPasscode.trim();
   }
   delete updatedConfig.newPasscode;
+
   inMemoryConfig = updatedConfig;
   await writeJsonAsync(CONFIG_FILE, updatedConfig);
   res.json({ success: true, config: updatedConfig });
