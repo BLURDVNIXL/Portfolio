@@ -28,7 +28,7 @@ export function resolveMediaPreview(url, fallbackThumb = '') {
     return {
       type: 'drive',
       id: driveId,
-      thumb: `https://lh3.googleusercontent.com/d/${driveId}=w1200`,
+      thumb: `https://drive.google.com/thumbnail?id=${driveId}&sz=w1200`,
       embed: `https://drive.google.com/file/d/${driveId}/preview`,
       isDrive: true
     };
@@ -412,13 +412,24 @@ export function initCreationsEngine() {
         `;
       }
     } else if (isPoster) {
-      const imgRes = resolveMediaPreview(item.imageUrl || item.posterUrl || '');
-      const img = imgRes.thumb || item.imageUrl || item.posterUrl;
-      mediaHtml = `
-        <div class="lightbox-poster-container">
-          <img src="${img}" alt="${escapeHtml(item.title)}" />
-        </div>
-      `;
+      const rawPoster = item.imageUrl || item.posterUrl || '';
+      const imgRes = resolveMediaPreview(rawPoster);
+      const img = imgRes.thumb || rawPoster;
+      
+      if (imgRes.isDrive) {
+        mediaHtml = `
+          <div class="lightbox-poster-container" style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; height:100%;">
+            <img src="${img}" alt="${escapeHtml(item.title)}" onerror="this.style.display='none'; document.getElementById('drive-poster-iframe').style.display='block';" style="max-height:80vh; max-width:100%; object-fit:contain;" />
+            <iframe id="drive-poster-iframe" src="${imgRes.embed}" style="display:none; width:100%; height:80vh; border:none; border-radius:12px;" allow="autoplay" allowfullscreen></iframe>
+          </div>
+        `;
+      } else {
+        mediaHtml = `
+          <div class="lightbox-poster-container">
+            <img src="${img}" alt="${escapeHtml(item.title)}" />
+          </div>
+        `;
+      }
     } else {
       const imgRes = resolveMediaPreview(item.demoPhotoUrl || item.imageUrl || item.posterUrl || '');
       const img = imgRes.thumb || item.demoPhotoUrl || item.imageUrl || item.posterUrl;

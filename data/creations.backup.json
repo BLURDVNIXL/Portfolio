@@ -1,1 +1,124 @@
-[]
+[
+  {
+    "id": "teaser-le-prix-du-prestige",
+    "category": "video",
+    "title": "Teaser Officiel — Le Prix du Prestige",
+    "client": "DATA CORPORATION Film",
+    "year": "2026",
+    "duration": "01:24",
+    "youtubeUrl": "https://youtu.be/FmdzaoXMUE0?si=wvzfuI5i7irjxbjR",
+    "youtubeId": "FmdzaoXMUE0",
+    "posterUrl": "https://img.youtube.com/vi/FmdzaoXMUE0/maxresdefault.jpg",
+    "tools": [
+      "Premiere Pro",
+      "After Effects",
+      "Sound Design",
+      "Color Grading",
+      "Direction Artistique"
+    ],
+    "description": "Teaser officiel du court-métrage \"Le prix du prestige\" réalisé et produit par DATA CORPORATION Film. Plongée visuelle et sonore intense au cœur de l'ambition, des rivalités académiques et du dépassement de soi en classes préparatoires scientifiques (CPGE).",
+    "featured": true,
+    "createdAt": "2026-11-05T17:00:00.000Z"
+  },
+  {
+    "id": "explore-ci-demo",
+    "category": "demo",
+    "title": "Explore CI — Démonstration & Plateforme Numérique",
+    "client": "DATA CORPORATION",
+    "year": "2026",
+    "duration": "03:15",
+    "demoPhotoUrl": "https://img.youtube.com/vi/El97oX4NSPo/maxresdefault.jpg",
+    "demoVideoUrl": "https://youtu.be/El97oX4NSPo?si=Ea0D9j9vi2znSYNY",
+    "youtubeUrl": "https://youtu.be/El97oX4NSPo?si=Ea0D9j9vi2znSYNY",
+    "youtubeId": "El97oX4NSPo",
+    "githubUrl": "https://github.com/DATA-CORP0RATION/eX",
+    "liveUrl": "https://github.com/DATA-CORP0RATION/eX",
+    "stack": [
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Cartographie Interactive",
+      "Node.js"
+    ],
+    "tools": [
+      "React",
+      "TypeScript",
+      "Git",
+      "Figma",
+      "Architecture Logicielle"
+    ],
+    "description": "Démonstration interactive et application Explore CI dédiée à la valorisation touristique, culturelle et patrimoniale de la Côte d'Ivoire. Présentation des fonctionnalités, cartographie et parcours utilisateur conçus par DATA CORPORATION.",
+    "featured": true,
+    "createdAt": "2026-11-05T17:01:00.000Z"
+  },
+  {
+    "id": "affiche-conges-toussaint",
+    "category": "images",
+    "title": "Affiche Officielle — Congés de Toussaint",
+    "client": "Association des Caïmans Techno 25 (INP-HB)",
+    "year": "2025",
+    "format": "Format A2 Print & Digital",
+    "imageUrl": "https://drive.google.com/file/d/15wDbdTjVPLbLqdYFk4olD1bGYNHUVmbJ/view?usp=sharing",
+    "posterUrl": "https://drive.google.com/thumbnail?id=15wDbdTjVPLbLqdYFk4olD1bGYNHUVmbJ&sz=w1200",
+    "tools": [
+      "Photoshop",
+      "Illustrator",
+      "Typographie",
+      "Direction Artistique",
+      "Composition Visuelle"
+    ],
+    "description": "Affiche officielle de communication créée pour la période des congés de Toussaint des classes préparatoires scientifiques de l'INP-HB Yamoussoukro (Caïmans Techno 25). Équilibre visuel, palette chromatique soignée et hiérarchisation graphique des messages.",
+    "featured": true,
+    "createdAt": "2026-11-05T17:02:00.000Z"
+  },
+  {
+    "id": "algo-binomage-mj",
+    "category": "demo",
+    "title": "Algorithme de Binômage CPGE (Moteur MJ)",
+    "client": "INP-HB · Caïmans Techno 25",
+    "year": "2025/2026",
+    "demoPhotoUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+    "githubUrl": "https://github.com/BLURDVNIXL/MJ",
+    "liveUrl": "https://github.com/BLURDVNIXL/MJ",
+    "stack": [
+      "Python",
+      "Théorie des Graphes",
+      "Matching Multicritères",
+      "Optimisation Algorithmique"
+    ],
+    "tools": [
+      "Python",
+      "Git",
+      "Algorithmique Avancée"
+    ],
+    "description": "Code source officiel de l'algorithme d'appairage optimisé et de binômage (MJ) conçu pour la Cérémonie de Binômage des prépas de l'INP-HB (MPSI, MP2I, PCSI). Résolution multicritère basée sur les affinités, parcours académiques et pondérations personnalisées.",
+    "featured": true,
+    "createdAt": "2026-11-05T17:03:00.000Z"
+  },
+  {
+    "id": "explore-ci-source-code",
+    "category": "autres",
+    "title": "Explore CI — Architecture & Code Source Ouvert",
+    "client": "DATA CORPORATION",
+    "year": "2026",
+    "demoPhotoUrl": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
+    "githubUrl": "https://github.com/DATA-CORP0RATION/eX",
+    "liveUrl": "https://github.com/DATA-CORP0RATION/eX",
+    "stack": [
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Vite",
+      "Clean Architecture"
+    ],
+    "tools": [
+      "TypeScript",
+      "React",
+      "Git",
+      "GitHub Open Source"
+    ],
+    "description": "Dépôt officiel du code source et socle technique de l'application Explore CI hébergé sur l'organisation DATA CORPORATION. Composants réutilisables, gestion d'état moderne, navigation fluide et intégrations cartographiques.",
+    "featured": true,
+    "createdAt": "2026-11-05T17:04:00.000Z"
+  }
+]
