@@ -31,9 +31,13 @@ const SERVER_SECRET = process.env.ADMIN_SECRET || crypto.randomBytes(32).toStrin
 
 // Directories
 const DATA_DIR = path.join(process.cwd(), 'data');
-const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads');
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+const UPLOADS_DIR = process.env.VERCEL ? path.join('/tmp', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
+try {
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+} catch (e) {}
+try {
+  if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+} catch (e) {}
 
 const CREATIONS_FILE = path.join(DATA_DIR, 'creations.json');
 const CONFIG_FILE = path.join(DATA_DIR, 'config.json');
@@ -577,7 +581,13 @@ async function startServer() {
   });
 }
 
-startServer().catch((err) => {
-  console.error('[Portfolio Server] Erreur démarrage serveur:', err);
-  process.exit(1);
-});
+// Export Express app for Vercel Serverless Functions
+export default app;
+
+// Only start the standalone listener if NOT running in Vercel Serverless
+if (!process.env.VERCEL) {
+  startServer().catch((err) => {
+    console.error('[Portfolio Server] Erreur démarrage serveur:', err);
+    process.exit(1);
+  });
+}
