@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daniel Adjiri — Panel Admin &amp; CMS Créations</title>
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/portfolio.css" />
+  <style>
+    body {
+      background: #090a08;
+      color: #f5efe2;
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(15, 17, 13, 0.9);
+      backdrop-filter: blur(14px);
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .admin-brand svg {
+      width: 22px;
+      height: 22px;
+      color: var(--accent);
+    }
+    .admin-badge {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(142, 56, 255, 0.15);
+      border: 1px solid rgba(142, 56, 255, 0.4);
+      color: #b57cff;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .admin-nav {
+      display: flex;
+      gap: 12px;
+    }
+    .admin-main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 36px 24px 80px;
+    }
+    .login-container {
+      max-width: 420px;
+      margin: 80px auto;
+      padding: 36px 32px;
+      background: #121410;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+    .admin-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+      margin-bottom: 32px;
+      overflow-x: auto;
+    }
+    .admin-tab-btn {
+      padding: 9px 20px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .admin-tab-btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    .admin-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .admin-tab-btn.active {
+      background: var(--cream);
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .panel-section {
+      display: none;
+    }
+    .panel-section.active {
+      display: block;
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .admin-table th, .admin-table td {
+      padding: 14px 18px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    .admin-table th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .admin-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .admin-form-group label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--cream);
+    }
+    .admin-input, .admin-select, .admin-textarea {
+      width: 100%;
+      padding: 10px 14px;
+      background: #1b1e17;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 9px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    .admin-input:focus, .admin-select:focus, .admin-textarea:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+    .btn-admin {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-admin-primary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+    .btn-admin-primary:hover {
+      background: #ff7f4f;
+      transform: translateY(-1px);
+    }
+    .btn-admin-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .btn-admin-secondary:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+    .btn-admin-danger {
+      background: rgba(239, 68, 68, 0.18);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .btn-admin-danger:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+    .admin-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s;
+    }
+    .admin-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .admin-modal-card {
+      background: #141611;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ADMIN HEADER -->
+  <header class="admin-header">
+    <div class="admin-brand">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2c5.52 0 10 4.48 10 10v10H12C6.48 22 2 17.52 2 12S6.48 2 12 2Zm-.3 4.1a5.9 5.9 0 1 0 0 11.8 5.9 5.9 0 0 0 0-11.8Z"/>
+      </svg>
+      <span>Daniel Adjiri — Studio Admin</span>
+      <span class="admin-badge">CMS Privé</span>
+    </div>
+
+    <nav class="admin-nav">
+      <a href="/" class="btn-admin btn-admin-secondary">← Retour au portfolio</a>
+      <button type="button" id="btn-logout" class="btn-admin btn-admin-danger" style="display:none;">Déconnexion</button>
+    </nav>
+  </header>
+
+  <!-- LOGIN CONTAINER -->
+  <div id="login-screen" class="login-container">
+    <h2 style="font-size:1.5rem; margin-bottom:8px;">Espace Administrateur</h2>
+    <p style="font-size:0.9rem; color:var(--muted); margin-bottom:24px;">Entrez votre code d'accès confidentiel pour gérer vos créations et l'ambiance du hero.</p>
+    
+    <form id="form-login">
+      <div class="admin-form-group">
+        <label for="passcode-input">Code d’accès secret</label>
+        <input type="password" id="passcode-input" class="admin-input" placeholder="Ex: daniel2026" required autocomplete="current-password" />
+      </div>
+      <p id="login-error" style="color:#f87171; font-size:12px; margin-bottom:12px; display:none;"></p>
+      <button type="submit" class="btn-admin btn-admin-primary" style="width:100%; justify-content:center;">Connexion au CMS</button>
+    </form>
+  </div>
+
+  <!-- DASHBOARD MAIN -->
+  <main id="admin-dashboard" class="admin-main" style="display:none;">
+    
+    <!-- NAVIGATION TABS -->
+    <div class="admin-tabs">
+      <button type="button" class="admin-tab-btn active" data-tab="tab-creations">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span>Mes Créations</span>
+      </button>
+      <button type="button" class="admin-tab-btn" data-tab="tab-audio">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <span>Musique du Hero 3D</span>
+      </button>
+      <button type="button" class="admin-tab-btn" data-tab="tab-backup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        <span>Sauvegarde &amp; Restauration</span>
+      </button>
+      <button type="button" class="admin-tab-btn" data-tab="tab-cv">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span>Parcours &amp; CV</span>
+      </button>
+      <button type="button" class="admin-tab-btn" data-tab="tab-profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profil &amp; Coordonnées</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: CREATIONS -->
+    <section id="tab-creations" class="panel-section active">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div>
+          <h2 style="font-size:1.6rem; font-family:var(--font-display);">Liste de vos créations</h2>
+          <p style="font-size:0.9rem; color:var(--muted);">Ajoutez, modifiez ou supprimez vos vidéos YouTube, affiches et applications.</p>
+        </div>
+        <button type="button" id="btn-add-creation" class="btn-admin btn-admin-primary">+ Nouvelle Création</button>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Aperçu</th>
+              <th>Titre du Projet</th>
+              <th>Catégorie</th>
+              <th>Client / Contexte</th>
+              <th>Outils</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="creations-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 2: AUDIO DU HERO 3D -->
+    <section id="tab-audio" class="panel-section">
+      <div style="max-width:680px;">
+        <h2 style="font-size:1.6rem; font-family:var(--font-display); margin-bottom:8px;">Ambiance Musicale du Hero 3D</h2>
+        <p style="font-size:0.9rem; color:var(--muted); margin-bottom:24px;">Contrôlez l'audio déclenché par le bouton son interactif dans la vallée de fleurs.</p>
+
+        <form id="form-audio-config">
+          <div class="admin-form-group">
+            <label>Mode de musique</label>
+            <div style="display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+              <label style="cursor:pointer; display:flex; align-items:center; gap:8px;">
+                <input type="radio" name="audioMode" value="playlist" checked />
+                <span><strong>Musiques d’ambiance libres de droit (Lecture aléatoire)</strong> — Recommandé</span>
+              </label>
+              <label style="cursor:pointer; display:flex; align-items:center; gap:8px;">
+                <input type="radio" name="audioMode" value="procedural" />
+                <span>Synthétiseur Procédural Ambiant (Généré en temps réel par Web Audio)</span>
+              </label>
+              <label style="cursor:pointer; display:flex; align-items:center; gap:8px;">
+                <input type="radio" name="audioMode" value="custom" />
+                <span>Bande Son Personnalisée (Fichier MP3 / OGG externe)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Playlist Preview Box -->
+          <div id="playlist-audio-fields" style="padding:16px; background:rgba(255,255,255,0.02); border:1px solid var(--line); border-radius:12px; margin-bottom:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <span style="font-weight:600; font-size:13px; color:var(--cream);">Morceaux libres de droit en rotation aléatoire :</span>
+              <span style="font-size:11px; color:#ff2a5f; font-family:var(--mono);">4 pistes actives</span>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; font-size:12px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#191c16; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+                <div>
+                  <span style="font-weight:600; color:#fff;">1. Sérénité Crépusculaire</span>
+                  <span style="color:var(--muted); margin-left:8px;">Emil Davydov (Sketch No. 1)</span>
+                </div>
+                <audio controls preload="none" src="/audio/ambient-1.mp3" style="height:28px; max-width:180px;"></audio>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#191c16; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+                <div>
+                  <span style="font-weight:600; color:#fff;">2. Don't Say Goodbye</span>
+                  <span style="color:var(--muted); margin-left:8px;">Candlegravity (Ambiance Éthérée)</span>
+                </div>
+                <audio controls preload="none" src="/audio/ambient-2.mp3" style="height:28px; max-width:180px;"></audio>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#191c16; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+                <div>
+                  <span style="font-weight:600; color:#fff;">3. Nocturne Spatial</span>
+                  <span style="color:var(--muted); margin-left:8px;">Emil Davydov (Sketch No. 2)</span>
+                </div>
+                <audio controls preload="none" src="/audio/ambient-3.mp3" style="height:28px; max-width:180px;"></audio>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; background:#191c16; border-radius:8px; border:1px solid rgba(255,255,255,0.06);">
+                <div>
+                  <span style="font-weight:600; color:#fff;">4. Harmonies Flottantes</span>
+                  <span style="color:var(--muted); margin-left:8px;">Emil Davydov (Sketch No. 3)</span>
+                </div>
+                <audio controls preload="none" src="/audio/ambient-4.mp3" style="height:28px; max-width:180px;"></audio>
+              </div>
+            </div>
+          </div>
+
+          <div id="custom-audio-fields" style="display:none; padding:16px; background:rgba(255,255,255,0.02); border:1px solid var(--line); border-radius:12px; margin-bottom:18px;">
+            <div class="admin-form-group">
+              <label for="audio-upload">Téléverser un fichier MP3 / Audio</label>
+              <input type="file" id="audio-upload" accept="audio/*" class="admin-input" />
+              <small style="color:var(--muted); font-size:12px;">Enregistre le fichier audio sur votre serveur dans /uploads/.</small>
+            </div>
+            
+            <div class="admin-form-group">
+              <label for="audio-url-input">Ou URL du fichier audio (MP3 / OGG)</label>
+              <input type="url" id="audio-url-input" class="admin-input" placeholder="https://exemple.com/musique.mp3 ou /uploads/mon-morceau.mp3" />
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="audio-volume-range">Volume par défaut (<span id="vol-display">55%</span>)</label>
+            <input type="range" id="audio-volume-range" min="0" max="1" step="0.05" value="0.55" style="width:100%;" />
+            <small style="color:var(--muted); font-size:12px;">Niveau sonore légèrement rehaussé pour une présence musicale chaleureuse.</small>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="audio-title-input">Titre / Description affichée</label>
+            <input type="text" id="audio-title-input" class="admin-input" value="Musiques d'ambiance libres de droit (Aléatoire)" />
+          </div>
+
+          <button type="submit" class="btn-admin btn-admin-primary">Enregistrer la configuration audio</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 3: BACKUP -->
+    <section id="tab-backup" class="panel-section">
+      <div style="max-width:680px;">
+        <h2 style="font-size:1.6rem; font-family:var(--font-display); margin-bottom:8px;">Sauvegarde &amp; Restauration Physique</h2>
+        <p style="font-size:0.9rem; color:var(--muted); margin-bottom:24px;">Garantissez la pérennité absolue de votre travail. Téléchargez une copie physique de tout votre portfolio sur votre ordinateur, ou restaurez-la en un clic.</p>
+
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div style="padding:20px; background:#181a14; border:1px solid var(--line); border-radius:14px;">
+            <h3 style="font-size:1.1rem; margin-bottom:6px;">1. Exporter l’intégralité de vos projets</h3>
+            <p style="font-size:0.88rem; color:var(--muted); margin-bottom:14px;">Télécharge un fichier JSON contenant tous vos titres, descriptions, liens YouTube, URLs d'affiches et technologies.</p>
+            <button type="button" id="btn-export-json" class="btn-admin btn-admin-primary">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Télécharger la sauvegarde (creations_backup.json)</span>
+            </button>
+          </div>
+
+          <div style="padding:20px; background:#181a14; border:1px solid var(--line); border-radius:14px;">
+            <h3 style="font-size:1.1rem; margin-bottom:6px;">2. Restaurer depuis un fichier de sauvegarde</h3>
+            <p style="font-size:0.88rem; color:var(--muted); margin-bottom:14px;">Importez un fichier de sauvegarde pour restaurer instantanément tous vos projets sur le serveur.</p>
+            <input type="file" id="import-json-file" accept=".json" style="margin-bottom:12px; display:block;" />
+            <button type="button" id="btn-import-json" class="btn-admin btn-admin-secondary">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Restaurer les projets</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3b: PARCOURS & CV -->
+    <section id="tab-cv" class="panel-section">
+      <div style="max-width:820px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <h2 style="font-size:1.6rem; font-family:var(--font-display);">Gestion du Parcours &amp; CV</h2>
+            <p style="font-size:0.9rem; color:var(--muted);">Gérez directement vos formations, diplômes, responsabilités et compétences techniques affichés sur le portfolio.</p>
+          </div>
+        </div>
+
+        <form id="form-cv-config">
+          <!-- 1. FORMATIONS ACADÉMIQUES -->
+          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--line); border-radius:14px; padding:22px; margin-bottom:24px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h3 style="font-size:1.15rem; color:var(--violet); display:flex; align-items:center; gap:8px;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                <span>1. Formations Académiques &amp; Diplômes</span>
+              </h3>
+              <button type="button" id="btn-add-formation" class="btn-admin btn-admin-secondary" style="padding:6px 14px; font-size:12px;">+ Ajouter une formation</button>
+            </div>
+            <div id="cv-formations-container" style="display:flex; flex-direction:column; gap:16px;">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- 2. ENGAGEMENTS & RESPONSABILITÉS -->
+          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--line); border-radius:14px; padding:22px; margin-bottom:24px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h3 style="font-size:1.15rem; color:var(--violet); display:flex; align-items:center; gap:8px;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>2. Engagements Associatifs &amp; Responsabilités</span>
+              </h3>
+              <button type="button" id="btn-add-engagement" class="btn-admin btn-admin-secondary" style="padding:6px 14px; font-size:12px;">+ Ajouter un engagement</button>
+            </div>
+            <div id="cv-engagements-container" style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- 3. COMPÉTENCES TECHNIQUES -->
+          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--line); border-radius:14px; padding:22px; margin-bottom:24px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+              <h3 style="font-size:1.15rem; color:var(--violet); display:flex; align-items:center; gap:8px;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                <span>3. Compétences Techniques &amp; Création</span>
+              </h3>
+              <button type="button" id="btn-add-skill" class="btn-admin btn-admin-secondary" style="padding:6px 14px; font-size:12px;">+ Ajouter une catégorie</button>
+            </div>
+            <div id="cv-skills-container" style="display:flex; flex-direction:column; gap:12px;">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <button type="submit" class="btn-admin btn-admin-primary" style="padding:12px 24px;">Enregistrer le Parcours &amp; CV</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 4: PROFILE & HERO 3D -->
+    <section id="tab-profile" class="panel-section">
+      <div style="max-width:680px;">
+        <h2 style="font-size:1.6rem; font-family:var(--font-display); margin-bottom:8px;">Textes du Hero 3D &amp; Section Contact</h2>
+        <p style="font-size:0.9rem; color:var(--muted); margin-bottom:24px;">Modifiez les textes affichés sur la page d'accueil (Hero 3D) ainsi que vos coordonnées de contact.</p>
+
+        <form id="form-profile-config">
+          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:24px;">
+            <h3 style="font-size:1.15rem; color:var(--violet); margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+              <span>1. Textes du Hero 3D (Page d'accueil)</span>
+            </h3>
+
+            <div class="admin-form-group">
+              <label for="profile-hero-tagline">Badge supérieur (Tagline)</label>
+              <input type="text" id="profile-hero-tagline" class="admin-input" placeholder="Ex: Élève-Ingénieur CPGE MP2I / MPI · INP-HB" />
+            </div>
+
+            <div class="admin-form-group">
+              <label for="profile-hero-title">Grand titre principal</label>
+              <input type="text" id="profile-hero-title" class="admin-input" placeholder="Ex: Code, design, création." />
+            </div>
+
+            <div class="admin-form-group">
+              <label for="profile-hero-subtitle">Sous-titre / Nom &amp; Spécialité</label>
+              <input type="text" id="profile-hero-subtitle" class="admin-input" placeholder="Ex: ADJIRI N’DA ÉLIE DANIEL — Développeur full-stack &amp; créatif audiovisuel." />
+            </div>
+
+            <div class="admin-form-group">
+              <label for="profile-hero-bio">Phrase d'accroche / Deuxième ligne</label>
+              <input type="text" id="profile-hero-bio" class="admin-input" placeholder="Ex: Je construis des expériences qui vivent." />
+            </div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.02); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:24px;">
+            <h3 style="font-size:1.15rem; color:var(--violet); margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>2. Section Contact &amp; Coordonnées</span>
+            </h3>
+
+            <div class="admin-form-group">
+              <label for="profile-name">Nom complet</label>
+              <input type="text" id="profile-name" class="admin-input" value="ADJIRI N’DA ÉLIE DANIEL" required />
+            </div>
+
+            <div class="admin-form-group">
+              <label for="profile-telephones">Numéros de téléphone (séparés par des virgules)</label>
+              <input type="text" id="profile-telephones" class="admin-input" value="+225 07 78 78 02 55, +225 01 70 14 37 77, +225 07 79 81 59 33" />
+            </div>
+
+            <div class="admin-form-group">
+              <label for="profile-emails">Adresses Email (séparées par des virgules)</label>
+              <input type="text" id="profile-emails" class="admin-input" value="adjirieliedaniel@gmail.com, nda.adjiri25@inphb.ci" />
+            </div>
+
+            <div class="admin-form-group">
+              <label for="profile-github">Lien GitHub</label>
+              <input type="url" id="profile-github" class="admin-input" value="https://github.com/BLURDVNIXL" />
+            </div>
+
+            <div class="admin-form-group">
+              <label for="profile-location">Localisation / Établissement</label>
+              <input type="text" id="profile-location" class="admin-input" value="INP-HB, Yamoussoukro / Abidjan, Côte d'Ivoire" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-admin btn-admin-primary" style="padding:12px 24px;">Enregistrer le Hero &amp; les Coordonnées</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL ADD / EDIT CREATION -->
+  <div id="modal-creation" class="admin-modal">
+    <div class="admin-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h3 id="modal-creation-title" style="font-size:1.4rem;">Ajouter une création</h3>
+        <button type="button" id="btn-close-modal" style="font-size:24px; color:var(--muted); cursor:pointer;">&times;</button>
+      </div>
+
+      <form id="form-creation">
+        <input type="hidden" id="creation-id" />
+
+        <div class="admin-form-group">
+          <label for="creation-category">Rubrique de la création</label>
+          <select id="creation-category" class="admin-select" required>
+            <option value="video">Vidéos</option>
+            <option value="images">Images &amp; Affiches</option>
+            <option value="demo">Démo</option>
+            <option value="autres">Autres</option>
+          </select>
+        </div>
+
+        <div class="admin-form-group">
+          <label for="creation-title">Titre du projet</label>
+          <input type="text" id="creation-title" class="admin-input" placeholder="Ex: Le prix du prestige" required />
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          <div class="admin-form-group">
+            <label for="creation-client">Client / Contexte / Association</label>
+            <input type="text" id="creation-client" class="admin-input" placeholder="Ex: Association des Caïmans Techno 25" />
+          </div>
+          <div class="admin-form-group">
+            <label for="creation-year">Année</label>
+            <input type="text" id="creation-year" class="admin-input" value="2026" />
+          </div>
+        </div>
+
+        <!-- VIDEO FIELDS -->
+        <div id="fields-video" class="type-fields">
+          <div class="admin-form-group">
+            <label for="creation-youtube">Lien YouTube (URL complète ou ID)</label>
+            <input type="text" id="creation-youtube" class="admin-input" placeholder="https://www.youtube.com/watch?v=..." />
+          </div>
+          <div class="admin-form-group">
+            <label for="creation-duration">Durée de la vidéo</label>
+            <input type="text" id="creation-duration" class="admin-input" placeholder="Ex: 03:45 ou 18:20" />
+          </div>
+        </div>
+
+        <!-- POSTER FIELDS -->
+        <div id="fields-poster" class="type-fields" style="display:none;">
+          <div class="admin-form-group">
+            <label>Téléverser l’affiche depuis votre ordinateur</label>
+            <input type="file" id="poster-file-input" accept="image/*" class="admin-input" />
+            <small style="color:var(--muted); font-size:12px;">Enregistre l'image haute définition sur votre serveur.</small>
+          </div>
+          <div class="admin-form-group">
+            <label for="creation-image-url">Ou URL directe de l’affiche</label>
+            <input type="url" id="creation-image-url" class="admin-input" placeholder="https://..." />
+          </div>
+          <div class="admin-form-group">
+            <label for="creation-format">Format / Support</label>
+            <input type="text" id="creation-format" class="admin-input" placeholder="Ex: Affiche Cinéma (2:3) ou Format A2" />
+          </div>
+        </div>
+
+        <!-- APPLICATION FIELDS -->
+        <div id="fields-application" class="type-fields" style="display:none;">
+          <div class="admin-form-group">
+            <label>Photo de démonstration (Upload ou URL)</label>
+            <input type="file" id="app-photo-input" accept="image/*" class="admin-input" />
+            <input type="url" id="creation-app-photo" class="admin-input" style="margin-top:6px;" placeholder="https://... ou URL automatique" />
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+            <div class="admin-form-group">
+              <label for="creation-live-url">Lien démo en direct</label>
+              <input type="url" id="creation-live-url" class="admin-input" placeholder="https://..." />
+            </div>
+            <div class="admin-form-group">
+              <label for="creation-github-url">Lien dépôt GitHub</label>
+              <input type="url" id="creation-github-url" class="admin-input" placeholder="https://github.com/BLURDVNIXL/..." />
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-form-group">
+          <label for="creation-tools">Outils / Logiciels / Technologies (séparés par des virgules)</label>
+          <input type="text" id="creation-tools" class="admin-input" placeholder="Ex: Premiere Pro, After Effects, Photoshop ou Python, SQL, React" />
+        </div>
+
+        <div class="admin-form-group">
+          <label for="creation-desc">Description &amp; Notes de conception</label>
+          <textarea id="creation-desc" rows="4" class="admin-textarea" placeholder="Rôle, défis techniques, concept artistique..."></textarea>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px;">
+          <button type="button" id="btn-cancel-creation" class="btn-admin btn-admin-secondary">Annuler</button>
+          <button type="submit" class="btn-admin btn-admin-primary">Sauvegarder la création</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+{
+  "adminPasscode": "daniel2026",
+  "audio": {
+    "mode": "playlist",
+    "volume": 0.55,
+    "shuffle": true,
+    "title": "Musiques d'ambiance libres de droit (Aléatoire)",
+    "playlist": [
+      {
+        "id": "track-1",
+        "title": "Sérénité Crépusculaire (Sketch No. 1)",
+        "artist": "Emil Davydov",
+        "license": "Creative Commons · Libre de droit",
+        "url": "/audio/ambient-1.mp3"
+      },
+      {
+        "id": "track-2",
+        "title": "Don't Say Goodbye (Ambiance Éthérée)",
+        "artist": "Candlegravity",
+        "license": "Creative Commons · Libre de droit",
+        "url": "/audio/ambient-2.mp3"
+      },
+      {
+        "id": "track-3",
+        "title": "Nocturne Spatial (Sketch No. 2)",
+        "artist": "Emil Davydov",
+        "license": "Creative Commons · Libre de droit",
+        "url": "/audio/ambient-3.mp3"
+      },
+      {
+        "id": "track-4",
+        "title": "Harmonies Flottantes (Sketch No. 3)",
+        "artist": "Emil Davydov",
+        "license": "Creative Commons · Libre de droit",
+        "url": "/audio/ambient-4.mp3"
+      }
+    ]
+  },
+  "profile": {
+    "heroTagline": "Élève",
+    "heroTitle": "Code, design, création.",
+    "heroSubtitle": "ADJIRI N’DA ÉLIE DANIEL",
+    "heroBio": "Je construis des expériences qui vivent.",
+    "name": "ADJIRI N’DA ÉLIE DANIEL",
+    "telephones": [
+      "+225 07 78 78 02 55",
+      "+225 01 70 14 37 77",
+      "+225 07 79 81 59 33"
+    ],
+    "emails": [
+      "adjirieliedaniel@gmail.com",
+      "nda.adjiri25@inphb.ci"
+    ],
+    "github": "https://github.com/BLURDVNIXL",
+    "location": "INP-HB, Yamoussoukro / Abidjan, Côte d'Ivoire"
+  },
+  "cv": {
+    "formations": [
+      {
+        "year": "2026 — 2027",
+        "institution": "INP-HB · Yamoussoukro",
+        "title": "CPGE MPI (Mathématiques, Physique, Informatique)",
+        "description": "Deuxième année de classe préparatoire scientifique aux Grandes Écoles. Mathématiques fondamentales, algorithmique avancée, physique théorique et sciences pour l'ingénieur."
+      },
+      {
+        "year": "2025 — 2026",
+        "institution": "INP-HB · Yamoussoukro",
+        "title": "CPGE MP2I (Maths, Physique, Info, Ingénierie)",
+        "description": "Première année de classe préparatoire scientifique. Programmation système en C, OCaml, structures de données, combinatoire et sciences de l'ingénieur."
+      },
+      {
+        "year": "2025",
+        "institution": "Lycée Classique d’Abidjan",
+        "title": "Baccalauréat Scientifique (Série C) — Mention Bien",
+        "description": "Score : 283/400. Excellence en mathématiques et sciences physiques dans l'un des lycées d'élite de Côte d'Ivoire."
+      },
+      {
+        "year": "2022",
+        "institution": "EFODEV-CI & Saint-Paul",
+        "title": "Diplôme d’Excellence Scientifique & BEPC Très Bien",
+        "description": "Distinction décernée par l'ONG EFODEV-CI le 12 décembre 2022 pour résultats scientifiques exceptionnels. BEPC au Collège Catholique Saint-Paul Riviera M’Badon avec 292/360."
+      },
+      {
+        "year": "2018",
+        "institution": "Les Amis de Saint-Joseph",
+        "title": "CEPE — Mention Très Bien (154,5 / 170)",
+        "description": "Excellence académique dès les cycles fondamentaux."
+      }
+    ],
+    "engagements": [
+      {
+        "role": "Chef Adjoint Com",
+        "context": "Caïmans Techno 25 (INP-HB)"
+      },
+      {
+        "role": "Chef Programmation",
+        "context": "DATA CORPORATION (équipe de 3)"
+      },
+      {
+        "role": "Réalisateur & Auteur",
+        "context": "Court-métrage \"Le prix du prestige\""
+      },
+      {
+        "role": "Membre Actif",
+        "context": "Label Prestige · Schrödinger"
+      }
+    ],
+    "skills": [
+      {
+        "category": "Programmation",
+        "items": "Python · C · OCaml · SQL · JS"
+      },
+      {
+        "category": "Création & PAO",
+        "items": "After Effects · Photoshop · Montage"
+      },
+      {
+        "category": "Outils & Systèmes",
+        "items": "Git · Linux · Vite · Three.js"
+      },
+      {
+        "category": "Langues",
+        "items": "Français (maternelle) · Anglais"
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "portfolio-daniel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio — hero 3D Three.js + sections statiques, zéro build",
+  "scripts": {
+    "start": "npx --yes serve ."
+  }
+}

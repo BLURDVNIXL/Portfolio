@@ -1,0 +1,6 @@
+{
+  "name": "Daniel — Portfolio & Wafer Experience",
+  "description": "Portfolio créatif avec Vallée 3D générative Three.js et recréation interactive haute-fidélité de l'expérience Wafer (Sign-Up, canvas ASCII vidéo, dashboard et API models).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

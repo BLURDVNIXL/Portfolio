@@ -1,0 +1,1053 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ADJIRI N’DA ÉLIE DANIEL (@BLURDVNIXL) — Portfolio &amp; Studio Créatif</title>
+  <meta name="description" content="Portfolio officiel d'ADJIRI N’DA ÉLIE DANIEL (@BLURDVNIXL) : Élève-Ingénieur CPGE (MP2I/MPI) à l'INP-HB, développeur full-stack, réalisateur et designer graphique. Montages vidéo, affiches et code." />
+  <meta name="theme-color" content="#07080a" />
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Open Graph & Social Cards -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="ADJIRI N’DA ÉLIE DANIEL (@BLURDVNIXL) — Portfolio" />
+  <meta property="og:description" content="Élève-Ingénieur CPGE (MP2I/MPI) à l'INP-HB · Développeur Full-Stack, Réalisateur &amp; Designer Graphique." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80" />
+  <meta property="og:url" content="https://github.com/BLURDVNIXL" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ADJIRI N’DA ÉLIE DANIEL (@BLURDVNIXL) — Portfolio" />
+  <meta name="twitter:description" content="Montages vidéo, affiches et applications d'ADJIRI N’DA ÉLIE DANIEL, élève-ingénieur en CPGE à l'INP-HB." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80" />
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "ADJIRI N’DA ÉLIE DANIEL",
+    "alternateName": "BLURDVNIXL",
+    "jobTitle": "Élève-Ingénieur CPGE MP2I/MPI & Créatif Audiovisuel",
+    "alumniOf": "Institut National Polytechnique Félix Houphouët-Boigny (INP-HB)",
+    "url": "https://github.com/BLURDVNIXL",
+    "email": "adjirieliedaniel@gmail.com",
+    "telephone": "+2250778780255",
+    "knowsAbout": ["Python", "C", "OCaml", "SQL", "After Effects", "Photoshop", "Montage Vidéo", "Algorithmique", "Three.js"]
+  }
+  </script>
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400&family=Geist+Mono:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700&family=Manrope:wght@400;500;600&family=Outfit:wght@300;400&display=swap" rel="stylesheet" />
+
+  <!-- Three.js Import Map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/portfolio.css" />
+  <link rel="stylesheet" href="/css/wafer.css" />
+  <link rel="stylesheet" href="/css/creations.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Aller au contenu principal</a>
+
+  <!-- Monogram Logo Glyph -->
+  <svg style="display: none;">
+    <symbol id="wafer-glyph" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd">
+      <path d="M12 2c5.52 0 10 4.48 10 10v10H12C6.48 22 2 17.52 2 12S6.48 2 12 2Zm-.3 4.1a5.9 5.9 0 1 0 0 11.8 5.9 5.9 0 0 0 0-11.8Z"/>
+    </symbol>
+  </svg>
+
+  <!-- ============ SITE HEADER ============ -->
+  <header class="site-header" id="site-header">
+    <a class="logo" href="#hero" aria-label="Accueil — Daniel Adjiri">
+      Daniel<em>.</em>
+      <span class="logo-sub">@BLURDVNIXL</span>
+    </a>
+    <nav aria-label="Navigation principale">
+      <a href="#creations">Créations</a>
+      <a href="#cv">Formation &amp; CV</a>
+      <a href="#contact">Contact</a>
+      <a href="/admin.html" title="CMS Admin privé">Admin</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO 3D (Vallée Générative Réactive à la Souris) ============ -->
+    <section class="hero" id="hero" aria-label="Introduction interactive">
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+      <div class="hero-ui">
+        <div class="hero-ui-inner" id="hero-ui-inner">
+          <div class="hero-tagline" id="hero-tagline">
+            Élève-Ingénieur CPGE MP2I / MPI · <strong>INP-HB</strong>
+          </div>
+          <h1 id="hero-title">Code, design, <em>création.</em></h1>
+          <p class="cap" id="hero-cap"><strong>ADJIRI N’DA ÉLIE DANIEL</strong> — Développeur full-stack &amp; créatif audiovisuel.<br /><span>Je construis des expériences qui vivent.</span></p>
+          <a class="go" href="#creations" id="go" aria-label="Découvrir mes créations">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="corner">
+        <div class="ambient-track-pill" id="ambient-track-pill" aria-live="polite">
+          <span class="ambient-wave" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
+          <span class="track-title" id="ambient-track-title">Ambiance libre de droit</span>
+          <button type="button" class="btn-skip-track" id="btn-skip-track" title="Piste aléatoire suivante" aria-label="Changer de musique">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+              <polygon points="5 4 15 12 5 20 5 4"/>
+              <line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+        </div>
+        <button class="sound" id="sound" aria-pressed="false" aria-label="Son d’ambiance (géré dans le panel admin)">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 9.5v5h3.5L12 18V6L7.5 9.5Z"/>
+            <path class="w" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>
+            <path class="x" d="m16 10 4 4m0-4-4 4"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="loader" id="loader" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- ============ VOLET CRÉATION — STUDIO DANIEL (Voir mes créations ➔ Dashboard) ============ -->
+    <section class="section" id="creations" style="max-width: 1360px; padding-top: 50px;" aria-labelledby="creations-title">
+      <div class="section-head reveal" style="margin-bottom: 24px;">
+        <div>
+          <h2 id="creations-title">Volet Création</h2>
+        </div>
+      </div>
+
+      <!-- Container frame embedding Scene 1 & Scene 2 -->
+      <div class="wafer-frame-container" id="wafer-frame">
+        <div class="wafer-root" id="wafer-root">
+
+          <!-- ================= SCENE 1: "VOIR MES CRÉATIONS" ================= -->
+          <main class="auth" id="auth">
+            <div class="stage">
+              <!-- Castle loop video with live ASCII overlay -->
+              <video id="castle-video" crossorigin="anonymous" muted loop playsinline autoplay preload="auto" poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261008_132124_50d78eac-e46e-49d5-a59b-de71f535c38d.png">
+                <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261008_132243_cd48b677-64ff-4623-b56b-b53b043ece5d.mp4" type="video/mp4" />
+              </video>
+
+              <canvas id="castle-canvas"></canvas>
+
+              <!-- Gateway Card "Voir mes créations" -->
+              <div class="card">
+                <div class="logo-tile">
+                  <svg><use href="#wafer-glyph" /></svg>
+                </div>
+                <h1>Voir mes créations</h1>
+                <p class="sub">Vidéos, affiches de film, démonstrations &amp; code.</p>
+
+                <div class="oauth-row">
+                  <button type="button" class="btn-oauth" id="btn-shortcut-videos" data-target="#block-videos" aria-label="Accéder aux vidéos">
+                    <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="23 7 16 12 23 17 23 7"/>
+                      <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                    </svg>
+                    <span>Vidéos</span>
+                  </button>
+                  <button type="button" class="btn-oauth" id="btn-shortcut-images" data-target="#block-images" aria-label="Accéder aux affiches">
+                    <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    <span>Affiches</span>
+                  </button>
+                </div>
+
+                <div class="divider-or">ou</div>
+
+                <div style="margin-top: 10px;">
+                  <!-- Main CTA Button -->
+                  <button type="button" class="btn-submit" id="btn-see-creations" style="width: 100%;">
+                    Voir mes créations
+                  </button>
+                </div>
+
+                <p class="bottom-login">
+                  ADJIRI N’DA ÉLIE DANIEL — CPGE MP2I/MPI · INP-HB
+                </p>
+              </div>
+            </div>
+
+            <footer class="legal">
+              Studio créatif — Cliquez sur « Voir mes créations » pour explorer les projets.
+            </footer>
+          </main>
+
+          <!-- ================= SCENE 2: DASHBOARD (Vidéos, Images, Démo, Autres) ================= -->
+          <div class="app" id="app">
+            <aside class="side">
+              <div class="side-top">
+                <span class="wordmark">Daniel</span>
+                <button type="button" class="btn-collapse" id="btn-collapse" aria-label="Collapse sidebar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                    <rect x="3" y="3" width="18" height="18" rx="4" />
+                    <line x1="9" y1="3" x2="9" y2="21" />
+                    <rect x="5" y="6" width="2" height="12" fill="currentColor" stroke="none" />
+                  </svg>
+                </button>
+                <button type="button" class="btn-expand-glyph" id="btn-expand-glyph" aria-label="Expand sidebar">
+                  <svg><use href="#wafer-glyph" /></svg>
+                </button>
+              </div>
+
+              <!-- Sidebar Categories: Vidéos, Images, Démo, Autres -->
+              <nav class="side-nav">
+                <div class="nav-item active" id="nav-videos">
+                  <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                      <polygon points="23 7 16 12 23 17 23 7"/>
+                      <rect x="1" y="5" width="15" height="14" rx="2"/>
+                    </svg>
+                  </span>
+                  <span class="nav-label">Vidéos</span>
+                </div>
+
+                <div class="nav-item" id="nav-images">
+                  <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                  </span>
+                  <span class="nav-label">Images</span>
+                </div>
+
+                <div class="nav-item" id="nav-demo">
+                  <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                      <polyline points="4 17 10 11 4 5"/>
+                      <line x1="12" y1="19" x2="20" y2="19"/>
+                    </svg>
+                  </span>
+                  <span class="nav-label">Démo</span>
+                </div>
+
+                <div class="nav-item" id="nav-autres">
+                  <span class="nav-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                      <rect x="3" y="3" width="7" height="7"/>
+                      <rect x="14" y="3" width="7" height="7"/>
+                      <rect x="14" y="14" width="7" height="7"/>
+                      <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                  </span>
+                  <span class="nav-label">Autres</span>
+              </nav>
+            </aside>
+
+            <section class="panel">
+              <video id="sky-video" crossorigin="anonymous" muted loop playsinline preload="auto" poster="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261008_132137_6359ecf6-579c-4ff9-9f28-b220076e9195.png">
+                <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261008_132231_6df9b9a8-6975-4855-bdd8-5d72911d6ca5.mp4" type="video/mp4" />
+              </video>
+
+              <canvas id="sky-canvas"></canvas>
+
+              <div class="search-pill" role="button" aria-label="Search or press slash to top">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.3-4.3"/>
+                </svg>
+                <kbd>/</kbd>
+              </div>
+
+              <div class="scroll-pane">
+                <div class="dashboard-column">
+
+                  <!-- ================= BARRE DE NAVIGATION DES RUBRIQUES ================= -->
+                  <div class="rubriques-tab-bar" role="tablist" aria-label="Rubriques du studio">
+                    <button type="button" class="rubrique-tab-btn tab-videos active" data-rubrique="videos" role="tab" aria-selected="true" id="tab-btn-videos">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="23 7 16 12 23 17 23 7"/>
+                        <rect x="1" y="5" width="15" height="14" rx="2"/>
+                      </svg>
+                      <span>Vidéos</span>
+                      <span class="rubrique-tab-count">3</span>
+                    </button>
+
+                    <button type="button" class="rubrique-tab-btn tab-images" data-rubrique="images" role="tab" aria-selected="false" id="tab-btn-images">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                      </svg>
+                      <span>Images &amp; Affiches</span>
+                      <span class="rubrique-tab-count">4</span>
+                    </button>
+
+                    <button type="button" class="rubrique-tab-btn tab-demo" data-rubrique="demo" role="tab" aria-selected="false" id="tab-btn-demo">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polyline points="4 17 10 11 4 5"/>
+                        <line x1="12" y1="19" x2="20" y2="19"/>
+                      </svg>
+                      <span>Démo &amp; Apps</span>
+                      <span class="rubrique-tab-count">2</span>
+                    </button>
+
+                    <button type="button" class="rubrique-tab-btn tab-autres" data-rubrique="autres" role="tab" aria-selected="false" id="tab-btn-autres">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                      </svg>
+                      <span>Autres</span>
+                      <span class="rubrique-tab-count">2</span>
+                    </button>
+                  </div>
+
+                  <!-- ================= RUBRIQUE 1 : VIDÉOS (ACTIVE PAR DÉFAUT) ================= -->
+                  <section class="rubrique-view active" id="rubrique-videos" role="tabpanel" aria-labelledby="tab-btn-videos">
+                    <div class="rubrique-header">
+                      <div class="rubrique-header-lead">
+                        <div class="rubrique-header-tag">
+                          <span class="rubrique-header-tag-dot" style="background:#ff2a5f;"></span>
+                          <span>Rubrique · Vidéos</span>
+                        </div>
+                        <h2>Vidéos</h2>
+                        <p>Courts-métrages de fiction, montages officiels et vidéos événementielles. Cliquez sur un aperçu pour lancer le lecteur vidéo.</p>
+                      </div>
+                      <div class="rubrique-actions-right">
+                        <span style="font-family:var(--mono); font-size:12px; color:var(--muted);">3 réalisations</span>
+                      </div>
+                    </div>
+
+                    <div class="projects-grid-rubrique">
+                      <!-- Projet Vidéo 1 -->
+                      <article class="project-card-unique" data-id="prix-du-prestige">
+                        <div class="card-media-box" data-action="play" data-yt="dQw4w9WgXcQ" data-id="prix-du-prestige" title="Visionner 'Le prix du prestige'">
+                          <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80" alt="Le prix du prestige — Court-métrage" loading="lazy" />
+                          <div class="media-play-overlay">
+                            <div class="play-circle-btn" aria-label="Lire la vidéo">
+                              <svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                            </div>
+                          </div>
+                          <span class="media-chip-category" style="color:#ff2a5f;">Fiction</span>
+                          <span class="media-chip-duration">18:45</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">DATA CORPORATION Film</span>
+                            <span class="card-year">2026</span>
+                          </div>
+                          <h3 class="card-title">Le prix du prestige — Court-métrage</h3>
+                          <p class="card-desc">Court-métrage de fiction produit par DATA CORPORATION. Écriture du scénario original, réalisation et coordination générale d'une équipe de production d'environ 16 personnes.</p>
+                          <div class="card-tools-row">
+                            <span>Premiere Pro</span>
+                            <span>After Effects</span>
+                            <span>Scénario</span>
+                            <span>Direction d'acteurs</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <button type="button" class="btn-card-action btn-primary btn-play-trigger" data-yt="dQw4w9WgXcQ" data-id="prix-du-prestige">
+                              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                              <span>Visionner</span>
+                            </button>
+                            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener" class="btn-card-action btn-secondary">
+                              <span>YouTube ↗</span>
+                            </a>
+                          </div>
+                        </div>
+                      </article>
+
+                      <!-- Projet Vidéo 2 -->
+                      <article class="project-card-unique" data-id="noel-de-partage-2025">
+                        <div class="card-media-box" data-action="play" data-yt="L_LUpnjgPso" data-id="noel-de-partage-2025" title="Visionner 'Noël de Partage 2025'">
+                          <img src="https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=1200&q=80" alt="Noël de Partage 2025" loading="lazy" />
+                          <div class="media-play-overlay">
+                            <div class="play-circle-btn" aria-label="Lire la vidéo">
+                              <svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                            </div>
+                          </div>
+                          <span class="media-chip-category" style="color:#ff2a5f;">Aftermovie</span>
+                          <span class="media-chip-duration">03:12</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">Caïmans Techno 25 · INP-HB</span>
+                            <span class="card-year">2025</span>
+                          </div>
+                          <h3 class="card-title">Noël de Partage 2025 — Teaser &amp; Aftermovie</h3>
+                          <p class="card-desc">Montage vidéo dynamique réalisé à l'occasion de l'événement caritatif 'Noël de partage' regroupant les prépas MPSI, MP2I et PCSI de l'INP-HB. Captation des moments forts et étalonnage soigné.</p>
+                          <div class="card-tools-row">
+                            <span>After Effects</span>
+                            <span>Premiere Pro</span>
+                            <span>Sound Design</span>
+                            <span>Color Grading</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <button type="button" class="btn-card-action btn-primary btn-play-trigger" data-yt="L_LUpnjgPso" data-id="noel-de-partage-2025">
+                              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                              <span>Visionner</span>
+                            </button>
+                            <a href="https://www.youtube.com/watch?v=L_LUpnjgPso" target="_blank" rel="noopener" class="btn-card-action btn-secondary">
+                              <span>YouTube ↗</span>
+                            </a>
+                          </div>
+                        </div>
+                      </article>
+
+                      <!-- Projet Vidéo 3 -->
+                      <article class="project-card-unique" data-id="ceremonie-binomage-cpge">
+                        <div class="card-media-box" data-action="play" data-yt="kJQP7kiw5Fk" data-id="ceremonie-binomage-cpge" title="Visionner 'Cérémonie de Binômage CPGE'">
+                          <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80" alt="Cérémonie de Binômage CPGE" loading="lazy" />
+                          <div class="media-play-overlay">
+                            <div class="play-circle-btn" aria-label="Lire la vidéo">
+                              <svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                            </div>
+                          </div>
+                          <span class="media-chip-category" style="color:#ff2a5f;">Cérémonie</span>
+                          <span class="media-chip-duration">04:30</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">Caïmans Techno 25 · INP-HB</span>
+                            <span class="card-year">2025</span>
+                          </div>
+                          <h3 class="card-title">Cérémonie de Binômage CPGE 2025/2026</h3>
+                          <p class="card-desc">Film officiel de la soirée de binômage des prépas de l'INP-HB. Présentation solennelle et festive des parrainages avec titrages animés sur mesure.</p>
+                          <div class="card-tools-row">
+                            <span>After Effects</span>
+                            <span>Motion Design</span>
+                            <span>Premiere Pro</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <button type="button" class="btn-card-action btn-primary btn-play-trigger" data-yt="kJQP7kiw5Fk" data-id="ceremonie-binomage-cpge">
+                              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                              <span>Visionner</span>
+                            </button>
+                            <a href="https://www.youtube.com/watch?v=kJQP7kiw5Fk" target="_blank" rel="noopener" class="btn-card-action btn-secondary">
+                              <span>YouTube ↗</span>
+                            </a>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </section>
+
+                  <!-- ================= RUBRIQUE 2 : IMAGES & AFFICHES ================= -->
+                  <section class="rubrique-view" id="rubrique-images" role="tabpanel" aria-labelledby="tab-btn-images">
+                    <div class="rubrique-header">
+                      <div class="rubrique-header-lead">
+                        <div class="rubrique-header-tag">
+                          <span class="rubrique-header-tag-dot" style="background:#8e38ff;"></span>
+                          <span>Rubrique · Images</span>
+                        </div>
+                        <h2>Images &amp; Affiches</h2>
+                        <p>Affiches officielles de cinéma, PAO, Illustrator/Photoshop et direction artistique. Cliquez sur une affiche pour la zoomer en plein écran.</p>
+                      </div>
+                      <div class="rubrique-actions-right">
+                        <span style="font-family:var(--mono); font-size:12px; color:var(--muted);">4 sélections</span>
+                      </div>
+                    </div>
+
+                    <div class="projects-grid-rubrique grid-posters">
+                      <!-- Affiche 1 -->
+                      <article class="project-card-unique" data-id="affiche-prix-du-prestige">
+                        <div class="card-media-box aspect-poster" data-action="zoom" data-id="affiche-prix-du-prestige" title="Agrandir l'affiche">
+                          <img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80" alt="Affiche Officielle — Le Prix du Prestige" loading="lazy" />
+                          <div class="media-zoom-overlay">
+                            <span class="zoom-badge">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                              <span>Agrandir</span>
+                            </span>
+                          </div>
+                          <span class="media-chip-category" style="color:#8e38ff;">Affiche Cinéma</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">DATA CORPORATION Film</span>
+                            <span class="card-year">2026</span>
+                          </div>
+                          <h3 class="card-title">Affiche Officielle — Le Prix du Prestige</h3>
+                          <p class="card-desc">Création de l'affiche de cinéma officielle pour la fiction 'Le prix du prestige'. Composition dramatique en clair-obscur et typographie cinématographique incisive.</p>
+                          <div class="card-tools-row">
+                            <span>Photoshop</span>
+                            <span>After Effects</span>
+                            <span>Direction Artistique</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <button type="button" class="btn-card-action btn-primary btn-zoom-trigger" data-id="affiche-prix-du-prestige" style="background:#8e38ff;">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                              <span>Agrandir</span>
+                            </button>
+                            <span style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:auto;">300 DPI · 2:3</span>
+                          </div>
+                        </div>
+                      </article>
+
+                      <!-- Affiche 2 -->
+                      <article class="project-card-unique" data-id="affiche-noel-partage">
+                        <div class="card-media-box aspect-poster" data-action="zoom" data-id="affiche-noel-partage" title="Agrandir l'affiche">
+                          <img src="https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=1200&q=85" alt="Affiche Événementielle — Noël de Partage INP-HB" loading="lazy" />
+                          <div class="media-zoom-overlay">
+                            <span class="zoom-badge">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                              <span>Agrandir</span>
+                            </span>
+                          </div>
+                          <span class="media-chip-category" style="color:#8e38ff;">Print &amp; Web</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">Caïmans Techno 25 · INP-HB</span>
+                            <span class="card-year">2025</span>
+                          </div>
+                          <h3 class="card-title">Affiche Événementielle — Noël de Partage INP-HB</h3>
+                          <p class="card-desc">Affiche promotionnelle pour la collecte de fonds et la journée de solidarité des élèves prépas. Harmonie festive et hiérarchisation forte des informations clés.</p>
+                          <div class="card-tools-row">
+                            <span>Photoshop</span>
+                            <span>Illustrator</span>
+                            <span>Typographie</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <button type="button" class="btn-card-action btn-primary btn-zoom-trigger" data-id="affiche-noel-partage" style="background:#8e38ff;">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                              <span>Agrandir</span>
+                            </button>
+                            <span style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:auto;">Format A2</span>
+                          </div>
+                        </div>
+                      </article>
+
+                      <!-- Affiche 3 -->
+                      <article class="project-card-unique" data-id="affiche-binomage-caimans">
+                        <div class="card-media-box aspect-poster" data-action="zoom" data-id="affiche-binomage-caimans" title="Agrandir l'affiche">
+                          <img src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1200&q=85" alt="Affiche Officielle — Cérémonie de Binômage" loading="lazy" />
+                          <div class="media-zoom-overlay">
+                            <span class="zoom-badge">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                              <span>Agrandir</span>
+                            </span>
+                          </div>
+                          <span class="media-chip-category" style="color:#8e38ff;">Soirée de Gala</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">Caïmans Techno 25 · INP-HB</span>
+                            <span class="card-year">2025</span>
+                          </div>
+                          <h3 class="card-title">Affiche Officielle — Cérémonie de Binômage</h3>
+                          <p class="card-desc">Conception graphique pour la soirée de parrainage des classes préparatoires de l'INP-HB. Esthétique académique prestigieuse combinant dorures et typographie moderne.</p>
+                          <div class="card-tools-row">
+                            <span>Photoshop</span>
+                            <span>InDesign</span>
+                            <span>Mise en page</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <button type="button" class="btn-card-action btn-primary btn-zoom-trigger" data-id="affiche-binomage-caimans" style="background:#8e38ff;">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                              <span>Agrandir</span>
+                            </button>
+                            <span style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:auto;">Format A3 Print</span>
+                          </div>
+                        </div>
+                      </article>
+
+                      <!-- Affiche 4 -->
+                      <article class="project-card-unique" data-id="branding-data-corporation">
+                        <div class="card-media-box aspect-poster" data-action="zoom" data-id="branding-data-corporation" title="Agrandir la charte">
+                          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85" alt="Identité Visuelle &amp; Charte — DATA CORPORATION" loading="lazy" />
+                          <div class="media-zoom-overlay">
+                            <span class="zoom-badge">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                              <span>Agrandir</span>
+                            </span>
+                          </div>
+                          <span class="media-chip-category" style="color:#8e38ff;">Branding</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">DATA CORPORATION</span>
+                            <span class="card-year">2025</span>
+                          </div>
+                          <h3 class="card-title">Identité Visuelle &amp; Charte — DATA CORP</h3>
+                          <p class="card-desc">Identité visuelle complète pour la mini-entreprise DATA CORPORATION : logotype vectoriel, palette technologique (cyan, indigo, blanc pur) et gabarits réseaux.</p>
+                          <div class="card-tools-row">
+                            <span>Illustrator</span>
+                            <span>Photoshop</span>
+                            <span>Figma</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <button type="button" class="btn-card-action btn-primary btn-zoom-trigger" data-id="branding-data-corporation" style="background:#8e38ff;">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                              <span>Agrandir</span>
+                            </button>
+                            <span style="font-family:var(--mono); font-size:11px; color:var(--muted); margin-left:auto;">Vectoriel</span>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </section>
+
+                  <!-- ================= RUBRIQUE 3 : DÉMO & APPLICATIONS ================= -->
+                  <section class="rubrique-view" id="rubrique-demo" role="tabpanel" aria-labelledby="tab-btn-demo">
+                    <div class="rubrique-header">
+                      <div class="rubrique-header-lead">
+                        <div class="rubrique-header-tag">
+                          <span class="rubrique-header-tag-dot" style="background:#286aff;"></span>
+                          <span>Rubrique · Démo</span>
+                        </div>
+                        <h2>Démo &amp; Applications</h2>
+                        <p>Démonstrations d'applications logicielles interactives, algorithmes d'optimisation et moteurs 3D.</p>
+                      </div>
+                      <div class="rubrique-actions-right">
+                        <span style="font-family:var(--mono); font-size:12px; color:var(--muted);">2 applications</span>
+                      </div>
+                    </div>
+
+                    <div class="projects-grid-rubrique">
+                      <!-- Démo 1 -->
+                      <article class="project-card-unique" data-id="algorithme-appairage-binomage">
+                        <div class="card-media-box aspect-demo" data-action="detail" data-id="algorithme-appairage-binomage" title="Explorer l'algorithme">
+                          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80" alt="Algorithme d'Appairage &amp; Plateforme de Binômage" loading="lazy" />
+                          <span class="media-chip-category" style="color:#286aff;">Algorithme &amp; Web</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">Caïmans Techno 25 · INP-HB</span>
+                            <span class="card-year">2025/2026</span>
+                          </div>
+                          <h3 class="card-title">Algorithme d'Appairage &amp; Plateforme de Binômage CPGE</h3>
+                          <p class="card-desc">Conception et implémentation d'un algorithme de matching multicritères pour appairer les élèves de 1re année (filleuls) avec ceux de 2e année (parrains) selon leurs filières et affinités. Site web dédié pour consultation instantanée des binômes.</p>
+                          <div class="card-tools-row">
+                            <span>Python</span>
+                            <span>Algorithmique de graphes</span>
+                            <span>SQLite</span>
+                            <span>Flask</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <a href="https://github.com/BLURDVNIXL" target="_blank" rel="noopener" class="btn-card-action btn-primary" style="background:#286aff;">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                              <span>Dépôt GitHub</span>
+                            </a>
+                            <button type="button" class="btn-card-action btn-secondary btn-detail-trigger" data-id="algorithme-appairage-binomage">
+                              <span>Détails</span>
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+
+                      <!-- Démo 2 -->
+                      <article class="project-card-unique" data-id="vallee-generative-3d">
+                        <div class="card-media-box aspect-demo" data-action="detail" data-id="vallee-generative-3d" title="Tester la 3D">
+                          <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80" alt="Vallée 3D Générative &amp; Shaders GLSL" loading="lazy" />
+                          <span class="media-chip-category" style="color:#286aff;">Three.js &amp; GLSL</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">Recherche Graphique</span>
+                            <span class="card-year">2026</span>
+                          </div>
+                          <h3 class="card-title">Vallée 3D Générative &amp; Shaders GLSL</h3>
+                          <p class="card-desc">Moteur de rendu 3D interactif dans le navigateur générant 11 000 fleurs animées en shaders GLSL, poussières et rayons lumineux. Caméra sur courbe spline réagissant à la souris et synthèse audio procédurale.</p>
+                          <div class="card-tools-row">
+                            <span>Three.js</span>
+                            <span>GLSL</span>
+                            <span>WebGL</span>
+                            <span>TypeScript</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <a href="#hero" class="btn-card-action btn-primary" style="background:#286aff;">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                              <span>Explorer dans le Hero</span>
+                            </a>
+                            <a href="https://github.com/BLURDVNIXL" target="_blank" rel="noopener" class="btn-card-action btn-secondary">
+                              <span>GitHub ↗</span>
+                            </a>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </section>
+
+                  <!-- ================= RUBRIQUE 4 : AUTRES SYSTÈMES ================= -->
+                  <section class="rubrique-view" id="rubrique-autres" role="tabpanel" aria-labelledby="tab-btn-autres">
+                    <div class="rubrique-header">
+                      <div class="rubrique-header-lead">
+                        <div class="rubrique-header-tag">
+                          <span class="rubrique-header-tag-dot" style="background:#ff2a5f;"></span>
+                          <span>Rubrique · Autres</span>
+                        </div>
+                        <h2>Autres Systèmes &amp; Projets</h2>
+                        <p>Compilateurs de langages, théorie des types, programmation système et réalisations DATA CORPORATION.</p>
+                      </div>
+                      <div class="rubrique-actions-right">
+                        <span style="font-family:var(--mono); font-size:12px; color:var(--muted);">2 projets</span>
+                      </div>
+                    </div>
+
+                    <div class="projects-grid-rubrique">
+                      <!-- Autre 1 -->
+                      <article class="project-card-unique" data-id="mini-compilateur-ocaml">
+                        <div class="card-media-box aspect-demo" data-action="detail" data-id="mini-compilateur-ocaml" title="Détails du compilateur">
+                          <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80" alt="Mini-Compilateur OCaml / C" loading="lazy" />
+                          <span class="media-chip-category" style="color:#ff2a5f;">Compilateur</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">Projet Académique CPGE</span>
+                            <span class="card-year">2026</span>
+                          </div>
+                          <h3 class="card-title">Mini-Compilateur &amp; Interpréteur OCaml / C</h3>
+                          <p class="card-desc">Implémentation d'une chaîne de compilation complète pour un sous-ensemble fonctionnel : analyse lexicale (lexer), analyse syntaxique (parser AST), vérification des types et interpréteur d'exécution sous Linux.</p>
+                          <div class="card-tools-row">
+                            <span>OCaml</span>
+                            <span>C</span>
+                            <span>Théorie des Langages</span>
+                            <span>Linux</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <a href="https://github.com/BLURDVNIXL" target="_blank" rel="noopener" class="btn-card-action btn-primary" style="background:#ff2a5f;">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                              <span>Dépôt GitHub</span>
+                            </a>
+                            <button type="button" class="btn-card-action btn-secondary btn-detail-trigger" data-id="mini-compilateur-ocaml">
+                              <span>Détails</span>
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+
+                      <!-- Autre 2 -->
+                      <article class="project-card-unique" data-id="plateforme-data-corp">
+                        <div class="card-media-box aspect-demo" data-action="detail" data-id="plateforme-data-corp" title="Portail DATA CORPORATION">
+                          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80" alt="Portail DATA CORPORATION" loading="lazy" />
+                          <span class="media-chip-category" style="color:#ff2a5f;">Management &amp; Web</span>
+                        </div>
+                        <div class="card-content">
+                          <div class="card-meta-row">
+                            <span class="card-client">DATA CORPORATION</span>
+                            <span class="card-year">2025</span>
+                          </div>
+                          <h3 class="card-title">Plateforme de Services — DATA CORPORATION</h3>
+                          <p class="card-desc">Portail web et organisation technique pour la gestion de commandes de prestations (développement, design, audiovisuel). Direction d'une équipe de 3 développeurs et designers.</p>
+                          <div class="card-tools-row">
+                            <span>Node.js</span>
+                            <span>Express</span>
+                            <span>JavaScript</span>
+                            <span>Figma</span>
+                          </div>
+                          <div class="card-actions-row">
+                            <a href="https://github.com/BLURDVNIXL" target="_blank" rel="noopener" class="btn-card-action btn-primary" style="background:#ff2a5f;">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                              <span>Dépôt GitHub</span>
+                            </a>
+                            <button type="button" class="btn-card-action btn-secondary btn-detail-trigger" data-id="plateforme-data-corp">
+                              <span>Détails</span>
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </section>
+
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SECTION FORMATION & CV (Éditorial épuré sans pastille ni point) ============ -->
+    <section class="section" id="cv" aria-labelledby="cv-title">
+      <div class="section-head reveal">
+        <h2 id="cv-title">Parcours &amp; CV</h2>
+        <span class="count">Formation &amp; Expériences</span>
+      </div>
+
+      <div class="cv-editorial-grid">
+        <!-- Colonne gauche : Formations académiques sans aucun point ni bulle -->
+        <div class="editorial-career-list reveal" id="cv-formations-list">
+          
+          <article class="career-entry">
+            <div class="career-entry-header">
+              <span class="career-year">2026 — 2027</span>
+              <span class="career-institution">INP-HB · Yamoussoukro</span>
+            </div>
+            <h3>CPGE MPI (Mathématiques, Physique, Informatique)</h3>
+            <p>Deuxième année de classe préparatoire scientifique aux Grandes Écoles. Mathématiques fondamentales, algorithmique avancée, physique théorique et sciences pour l'ingénieur.</p>
+          </article>
+
+          <article class="career-entry">
+            <div class="career-entry-header">
+              <span class="career-year">2025 — 2026</span>
+              <span class="career-institution">INP-HB · Yamoussoukro</span>
+            </div>
+            <h3>CPGE MP2I (Maths, Physique, Info, Ingénierie)</h3>
+            <p>Première année de classe préparatoire scientifique. Programmation système en C, OCaml, structures de données, combinatoire et sciences de l'ingénieur.</p>
+          </article>
+
+          <article class="career-entry">
+            <div class="career-entry-header">
+              <span class="career-year">2025</span>
+              <span class="career-institution">Lycée Classique d’Abidjan</span>
+            </div>
+            <h3>Baccalauréat Scientifique (Série C) — Mention Bien</h3>
+            <p>Score : 283/400. Excellence en mathématiques et sciences physiques dans l'un des lycées d'élite de Côte d'Ivoire.</p>
+          </article>
+
+          <article class="career-entry">
+            <div class="career-entry-header">
+              <span class="career-year">2022</span>
+              <span class="career-institution">EFODEV-CI &amp; Saint-Paul</span>
+            </div>
+            <h3>Diplôme d’Excellence Scientifique &amp; BEPC Très Bien</h3>
+            <p>Distinction décernée par l'ONG EFODEV-CI le 12 décembre 2022 pour résultats scientifiques exceptionnels. BEPC au Collège Catholique Saint-Paul Riviera M’Badon avec 292/360.</p>
+          </article>
+
+          <article class="career-entry">
+            <div class="career-entry-header">
+              <span class="career-year">2018</span>
+              <span class="career-institution">Les Amis de Saint-Joseph</span>
+            </div>
+            <h3>CEPE — Mention Très Bien (154,5 / 170)</h3>
+            <p>Excellence académique dès les cycles fondamentaux.</p>
+          </article>
+
+        </div>
+
+        <!-- Colonne droite : Responsabilités & Compétences en liste éditoriale -->
+        <div class="about-side reveal">
+          <div>
+            <h3>Engagements &amp; Responsabilités</h3>
+            <ul class="stack-list" id="cv-engagements-list">
+              <li>
+                <span class="k">Chef Adjoint Com</span>
+                <span class="v">Caïmans Techno 25 (INP-HB)</span>
+              </li>
+              <li>
+                <span class="k">Chef Programmation</span>
+                <span class="v">DATA CORPORATION (équipe de 3)</span>
+              </li>
+              <li>
+                <span class="k">Réalisateur &amp; Auteur</span>
+                <span class="v">Court-métrage "Le prix du prestige"</span>
+              </li>
+              <li>
+                <span class="k">Membre Actif</span>
+                <span class="v">Label Prestige · Schrödinger</span>
+              </li>
+            </ul>
+          </div>
+
+          <div style="margin-top: 36px;">
+            <h3>Compétences Techniques &amp; Création</h3>
+            <ul class="stack-list" id="cv-skills-list">
+              <li>
+                <span class="k">Programmation</span>
+                <span class="v">Python · C · OCaml · SQL · JS</span>
+              </li>
+              <li>
+                <span class="k">Création &amp; PAO</span>
+                <span class="v">After Effects · Photoshop · Montage</span>
+              </li>
+              <li>
+                <span class="k">Outils &amp; Systèmes</span>
+                <span class="v">Git · Linux · Vite · Three.js</span>
+              </li>
+              <li>
+                <span class="k">Langues</span>
+                <span class="v">Français (maternelle) · Anglais</span>
+              </li>
+            </ul>
+          </div>
+
+          <div style="margin-top: 36px;">
+            <button type="button" class="btn-editorial" onclick="window.print()">
+              <span>Imprimer / Exporter le CV</span>
+              <svg style="width:14px; height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ UNIQUE SECTION CONTACT (Fin de page) ============ -->
+    <section class="section reveal" id="contact" aria-labelledby="contact-title" style="padding-bottom: 90px;">
+      <div class="section-head">
+        <div>
+          <span class="sub" style="font-family: var(--font-display); letter-spacing: 0.15em; color: var(--violet); text-transform: uppercase;">Me Joindre</span>
+          <h2 id="contact-title">Contact</h2>
+          <p style="color:var(--muted); font-size:1rem; margin-top:8px;">
+            Pour un projet de développement, un tournage, une réalisation audiovisuelle ou un stage d’ingénierie.
+          </p>
+        </div>
+      </div>
+
+      <div class="contact-editorial-grid">
+        <!-- Card Téléphones -->
+        <div class="contact-editorial-card">
+          <div class="contact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div class="contact-card-content">
+            <span class="contact-card-label">Téléphone &amp; WhatsApp</span>
+            <div id="contact-phones-list" class="contact-links-list">
+              <a href="tel:+2250778780255" class="contact-link">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.7;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>+225 07 78 78 02 55</span>
+              </a>
+              <a href="tel:+2250170143777" class="contact-link">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.7;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>+225 01 70 14 37 77</span>
+              </a>
+              <a href="tel:+2250779815933" class="contact-link">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.7;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <span>+225 07 79 81 59 33</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Email -->
+        <div class="contact-editorial-card">
+          <div class="contact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="contact-card-content">
+            <span class="contact-card-label">Adresses Email</span>
+            <div id="contact-emails-list" class="contact-links-list">
+              <a href="mailto:adjirieliedaniel@gmail.com" class="contact-link">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.7;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>adjirieliedaniel@gmail.com</span>
+              </a>
+              <a href="mailto:nda.adjiri25@inphb.ci" class="contact-link">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.7;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <span>nda.adjiri25@inphb.ci</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card GitHub & Établissement -->
+        <div class="contact-editorial-card">
+          <div class="contact-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          </div>
+          <div class="contact-card-content">
+            <span class="contact-card-label">GitHub &amp; Localisation</span>
+            <div class="contact-links-list">
+              <a id="contact-github-link" href="https://github.com/BLURDVNIXL" target="_blank" rel="noopener" class="contact-link">
+                <span>github.com/BLURDVNIXL</span>
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+              <span id="contact-location-text" style="font-size: 13px; color: var(--muted); margin-top: 4px;">INP-HB, Yamoussoukro / Abidjan, Côte d'Ivoire</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span>© <span id="year">2026</span> <strong>ADJIRI N’DA ÉLIE DANIEL</strong></span>
+    </div>
+    <a class="top" href="#hero">Haut de page ↑</a>
+  </footer>
+
+  <!-- ============ MODULAR JAVASCRIPT ============ -->
+  <script type="module" src="/js/pwa.js"></script>
+
+  <!-- 1. Lazy-Loaded Three.js 3D Hero with Mouse Camera Control -->
+  <script type="module">
+    import { initHeroThree } from '/js/hero-three.js';
+    initHeroThree();
+  </script>
+
+  <!-- 2. Studio Créations Engine (Voir mes créations ➔ Dashboard Vidéos, Images, Démo, Autres) -->
+  <script type="module">
+    import { initWafer } from '/js/wafer.js';
+    const waferFrame = document.getElementById('wafer-frame');
+    if (waferFrame) {
+      initWafer(waferFrame);
+    }
+
+    // Fullscreen toggle on Wafer container
+    const btnFullscreen = document.getElementById('btn-toggle-fullscreen');
+    const labelFullscreen = document.getElementById('label-fullscreen');
+    if (btnFullscreen) {
+      btnFullscreen.addEventListener('click', () => {
+        const isActive = document.body.classList.toggle('wafer-fullscreen-active');
+        if (labelFullscreen) {
+          labelFullscreen.textContent = isActive ? 'Quitter Plein Écran' : 'Plein écran';
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.body.classList.contains('wafer-fullscreen-active')) {
+          document.body.classList.remove('wafer-fullscreen-active');
+          if (labelFullscreen) labelFullscreen.textContent = 'Plein écran';
+        }
+      });
+    }
+
+    // Scroll reveal
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      }
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+    // Dynamic current year
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Scrolled header background
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      if (header) {
+        header.classList.toggle('scrolled-header', window.scrollY > 60);
+      }
+    }, { passive: true });
+  </script>
+
+  <!-- ================= UNIVERSAL FLOATING LIGHTBOX MODAL ================= -->
+  <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true" aria-label="Aperçu du projet">
+    <div class="lightbox-dialog">
+      <button type="button" class="lightbox-close-btn" id="lightbox-close" aria-label="Fermer l'aperçu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="lightbox-media-wrapper" id="lightbox-media"></div>
+      <div class="lightbox-details" id="lightbox-details"></div>
+    </div>
+  </div>
+
+  <!-- 3. Creations Engine (Lecteur vidéo lightbox flottant et zoom affiches) -->
+  <script type="module">
+    import { initCreationsEngine } from '/js/creations-engine.js';
+    initCreationsEngine();
+
+    // 4. Portfolio Dynamic Sync (Hero 3D Texts & Contact sync with CMS Admin)
+    import { initPortfolioSync } from '/js/portfolio-sync.js';
+    initPortfolioSync();
+  </script>
+</body>
+</html>
