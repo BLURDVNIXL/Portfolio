@@ -14,6 +14,44 @@ export function extractYouTubeId(url) {
   return (match && match[2].length === 11) ? match[2] : url;
 }
 
+export function extractGoogleDriveId(url) {
+  if (!url || typeof url !== 'string') return '';
+  const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  return match && match[1] ? match[1] : '';
+}
+
+export function resolveMediaPreview(url, fallbackThumb = '') {
+  if (!url) return { type: 'none', thumb: fallbackThumb, embed: '' };
+  
+  const driveId = extractGoogleDriveId(url);
+  if (driveId) {
+    return {
+      type: 'drive',
+      id: driveId,
+      thumb: `https://lh3.googleusercontent.com/d/${driveId}=w1200`,
+      embed: `https://drive.google.com/file/d/${driveId}/preview`,
+      isDrive: true
+    };
+  }
+
+  const ytId = extractYouTubeId(url);
+  if (ytId && ytId.length === 11) {
+    return {
+      type: 'youtube',
+      id: ytId,
+      thumb: `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`,
+      embed: `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0`,
+      isYouTube: true
+    };
+  }
+
+  return {
+    type: 'direct',
+    thumb: url,
+    embed: url
+  };
+}
+
 function escapeHtml(str) {
   if (!str) return '';
   return String(str)
@@ -25,13 +63,16 @@ function escapeHtml(str) {
 }
 
 function renderVideoCard(item) {
-  const ytId = extractYouTubeId(item.youtubeUrl || item.youtubeId || '');
-  const thumb = item.posterUrl || (ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80');
+  const rawVideo = item.videoUrl || item.youtubeUrl || item.youtubeId || '';
+  const videoRes = resolveMediaPreview(rawVideo);
+  const thumb = item.posterUrl || videoRes.thumb || 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=80';
+  const ytId = videoRes.isYouTube ? videoRes.id : '';
+  const driveId = videoRes.isDrive ? videoRes.id : '';
   const tools = (item.tools || item.stack || []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
 
   return `
     <article class="project-card-unique" data-id="${item.id}">
-      <div class="card-media-box" data-action="play" data-yt="${ytId}" data-id="${item.id}" title="Visionner '${escapeHtml(item.title)}'">
+      <div class="card-media-box" data-action="play" data-yt="${ytId}" data-drive="${driveId}" data-id="${item.id}" title="Visionner '${escapeHtml(item.title)}'">
         <img src="${thumb}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='/icons/icon.svg'" />
         <div class="media-play-overlay">
           <div class="play-circle-btn" aria-label="Lire la vidéo">
@@ -52,13 +93,13 @@ function renderVideoCard(item) {
           ${tools}
         </div>
         <div class="card-actions-row">
-          <button type="button" class="btn-card-action btn-primary btn-play-trigger" data-yt="${ytId}" data-id="${item.id}">
+          <button type="button" class="btn-card-action btn-primary btn-play-trigger" data-yt="${ytId}" data-drive="${driveId}" data-id="${item.id}">
             <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
             <span>Visionner</span>
           </button>
           ${item.youtubeUrl ? `
             <a href="${item.youtubeUrl}" target="_blank" rel="noopener" class="btn-card-action btn-secondary">
-              <span>YouTube ↗</span>
+              <span>${videoRes.isDrive ? 'Google Drive ↗' : 'YouTube ↗'}</span>
             </a>
           ` : ''}
         </div>
@@ -68,7 +109,8 @@ function renderVideoCard(item) {
 }
 
 function renderPosterCard(item) {
-  const img = item.imageUrl || item.posterUrl || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80';
+  const posterRes = resolveMediaPreview(item.imageUrl || item.posterUrl || '');
+  const img = posterRes.thumb || 'https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=1200&q=80';
   const tools = (item.tools || item.stack || []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
 
   return `
@@ -108,7 +150,8 @@ function renderPosterCard(item) {
 }
 
 function renderDemoCard(item) {
-  const photo = item.demoPhotoUrl || item.imageUrl || item.posterUrl || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80';
+  const demoRes = resolveMediaPreview(item.demoPhotoUrl || item.imageUrl || item.posterUrl || '');
+  const photo = demoRes.thumb || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80';
   const tools = (item.tools || item.stack || []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
 
   return `
@@ -296,26 +339,60 @@ export function initCreationsEngine() {
     // 1. Build Media
     let mediaHtml = '';
     if (isVideo) {
-      const ytId = extractYouTubeId(item.youtubeUrl || item.youtubeId || item.ytId);
-      mediaHtml = `
-        <div class="lightbox-video-container">
-          <iframe 
-            src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1" 
-            title="${escapeHtml(item.title)}" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-          </iframe>
-        </div>
-      `;
+      const rawVideo = item.videoUrl || item.youtubeUrl || item.youtubeId || item.ytId || '';
+      const previewRes = resolveMediaPreview(rawVideo);
+      
+      if (previewRes.isDrive) {
+        mediaHtml = `
+          <div class="lightbox-video-container">
+            <iframe 
+              src="https://drive.google.com/file/d/${previewRes.id}/preview" 
+              title="${escapeHtml(item.title)}" 
+              allow="autoplay; fullscreen" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        `;
+      } else if (previewRes.isYouTube) {
+        mediaHtml = `
+          <div class="lightbox-video-container">
+            <iframe 
+              src="https://www.youtube-nocookie.com/embed/${previewRes.id}?autoplay=1&rel=0&modestbranding=1" 
+              title="${escapeHtml(item.title)}" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        `;
+      } else if (rawVideo.match(/\.(mp4|webm|mov)$/i)) {
+        mediaHtml = `
+          <div class="lightbox-video-container">
+            <video src="${escapeHtml(rawVideo)}" controls autoplay playsinline style="width:100%; height:100%; object-fit:contain;"></video>
+          </div>
+        `;
+      } else {
+        mediaHtml = `
+          <div class="lightbox-video-container">
+            <iframe 
+              src="${escapeHtml(rawVideo)}" 
+              title="${escapeHtml(item.title)}" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        `;
+      }
     } else if (isPoster) {
-      const img = item.imageUrl || item.posterUrl;
+      const imgRes = resolveMediaPreview(item.imageUrl || item.posterUrl || '');
+      const img = imgRes.thumb || item.imageUrl || item.posterUrl;
       mediaHtml = `
         <div class="lightbox-poster-container">
           <img src="${img}" alt="${escapeHtml(item.title)}" />
         </div>
       `;
     } else {
-      const img = item.demoPhotoUrl || item.imageUrl || item.posterUrl;
+      const imgRes = resolveMediaPreview(item.demoPhotoUrl || item.imageUrl || item.posterUrl || '');
+      const img = imgRes.thumb || item.demoPhotoUrl || item.imageUrl || item.posterUrl;
       mediaHtml = `
         <div style="aspect-ratio: 16/9; background:#000; overflow:hidden;">
           <img src="${img}" alt="${escapeHtml(item.title)}" style="width:100%; height:100%; object-fit:cover;" />

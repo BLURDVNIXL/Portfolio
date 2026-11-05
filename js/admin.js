@@ -289,7 +289,75 @@ function openCreationModal(item = null) {
 
   creationCategory.dispatchEvent(new Event('change'));
   modalCreation.classList.add('active');
+  setTimeout(updateFormMediaPreview, 50);
 }
+
+function updateFormMediaPreview() {
+  const previewBox = document.getElementById('preview-box-container');
+  const previewContent = document.getElementById('media-live-preview');
+  const previewBadge = document.getElementById('preview-type-badge');
+  if (!previewBox || !previewContent) return;
+
+  const category = document.getElementById('creation-category')?.value;
+  let url = '';
+  if (category === 'video') {
+    url = document.getElementById('creation-youtube')?.value?.trim() || '';
+  } else if (category === 'images' || category === 'poster') {
+    url = document.getElementById('creation-image-url')?.value?.trim() || '';
+  } else {
+    url = document.getElementById('creation-app-photo')?.value?.trim() || '';
+  }
+
+  if (!url) {
+    previewBox.style.display = 'none';
+    previewContent.innerHTML = '';
+    return;
+  }
+
+  // Google Drive Link
+  const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (driveMatch && driveMatch[1]) {
+    const fileId = driveMatch[1];
+    previewBox.style.display = 'block';
+    if (previewBadge) previewBadge.textContent = 'Google Drive';
+    if (category === 'video') {
+      previewContent.innerHTML = `<iframe src="https://drive.google.com/file/d/${fileId}/preview" style="width:100%; height:180px; border:0; border-radius:4px;" allow="autoplay"></iframe>`;
+    } else {
+      previewContent.innerHTML = `<img src="https://lh3.googleusercontent.com/d/${fileId}=w600" style="max-height:180px; object-fit:contain; border-radius:4px;" onerror="this.alt='Lien Drive privé ou non partagé publiquement'" />`;
+    }
+    return;
+  }
+
+  // YouTube Link
+  const ytMatch = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+  if (ytMatch && ytMatch[2] && ytMatch[2].length === 11) {
+    const ytId = ytMatch[2];
+    previewBox.style.display = 'block';
+    if (previewBadge) previewBadge.textContent = 'YouTube';
+    previewContent.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytId}" style="width:100%; height:180px; border:0; border-radius:4px;" allowfullscreen></iframe>`;
+    return;
+  }
+
+  // Direct Image or Upload
+  if (url.match(/\.(jpg|jpeg|png|webp|gif|svg)$/i) || url.startsWith('/uploads/')) {
+    previewBox.style.display = 'block';
+    if (previewBadge) previewBadge.textContent = 'Image Directe';
+    previewContent.innerHTML = `<img src="${url}" style="max-height:180px; object-fit:contain; border-radius:4px;" onerror="this.style.display='none'" />`;
+    return;
+  }
+
+  previewBox.style.display = 'none';
+  previewContent.innerHTML = '';
+}
+
+// Bind live preview listeners
+['creation-youtube', 'creation-image-url', 'creation-app-photo', 'creation-category'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', updateFormMediaPreview);
+    el.addEventListener('change', updateFormMediaPreview);
+  }
+});
 
 function closeCreationModal() {
   modalCreation.classList.remove('active');

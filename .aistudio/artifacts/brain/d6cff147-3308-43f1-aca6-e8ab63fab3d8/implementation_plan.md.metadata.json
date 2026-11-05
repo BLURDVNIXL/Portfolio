@@ -1,0 +1,6 @@
+{
+  "summary": "Plan d'implémentation complet pour la refonte backend et sécurité du portfolio de Daniel Adjiri : élimination de la backdoor, authentification par token signé HMAC, persistance GitHub/JSON pour Vercel, et résolveur d'aperçus de médias externes (Google Drive, YouTube).",
+  "updatedAt": "2026-11-05T12:55:01.451235363Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

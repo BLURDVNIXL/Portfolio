@@ -610,8 +610,8 @@
         <!-- VIDEO FIELDS -->
         <div id="fields-video" class="type-fields">
           <div class="admin-form-group">
-            <label for="creation-youtube">Lien YouTube (URL complète ou ID)</label>
-            <input type="text" id="creation-youtube" class="admin-input" placeholder="https://www.youtube.com/watch?v=..." />
+            <label for="creation-youtube">Lien Vidéo (YouTube ou Google Drive)</label>
+            <input type="text" id="creation-youtube" class="admin-input" placeholder="https://www.youtube.com/watch?v=... ou https://drive.google.com/file/d/..." />
           </div>
           <div class="admin-form-group">
             <label for="creation-duration">Durée de la vidéo</label>
@@ -624,16 +624,25 @@
           <div class="admin-form-group">
             <label>Téléverser l’affiche depuis votre ordinateur</label>
             <input type="file" id="poster-file-input" accept="image/*" class="admin-input" />
-            <small style="color:var(--muted); font-size:12px;">Enregistre l'image haute définition sur votre serveur.</small>
+            <small style="color:var(--muted); font-size:12px;">Enregistre l'image haute définition sur votre serveur (JPG, PNG, WEBP).</small>
           </div>
           <div class="admin-form-group">
-            <label for="creation-image-url">Ou URL directe de l’affiche</label>
-            <input type="url" id="creation-image-url" class="admin-input" placeholder="https://..." />
+            <label for="creation-image-url">Ou lien Google Drive / URL directe de l’affiche</label>
+            <input type="url" id="creation-image-url" class="admin-input" placeholder="https://drive.google.com/file/d/... ou https://..." />
           </div>
           <div class="admin-form-group">
             <label for="creation-format">Format / Support</label>
             <input type="text" id="creation-format" class="admin-input" placeholder="Ex: Affiche Cinéma (2:3) ou Format A2" />
           </div>
+        </div>
+
+        <!-- LIVE PREVIEW CONTAINER -->
+        <div id="preview-box-container" style="display:none; margin-bottom:16px; padding:12px; background:rgba(0,0,0,0.5); border:1px solid #ffffff1a; border-radius:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--accent); font-weight:600;">Aperçu direct du média</span>
+            <span id="preview-type-badge" style="font-size:10px; font-family:var(--mono); color:var(--muted); background:#ffffff10; padding:2px 6px; border-radius:4px;"></span>
+          </div>
+          <div id="media-live-preview" style="max-height:220px; overflow:hidden; border-radius:6px; display:flex; justify-content:center; align-items:center; background:#000;"></div>
         </div>
 
         <!-- APPLICATION FIELDS -->
