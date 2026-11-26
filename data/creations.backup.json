@@ -55,11 +55,11 @@
     "id": "affiche-conges-toussaint",
     "category": "images",
     "title": "Affiche Officielle — Congés de Toussaint",
-    "client": "Association des Caïmans Techno 25 (INP-HB)",
-    "year": "2025",
+    "client": "Équipe \"Le Prix du Prestige\" · INP-HB",
+    "year": "2026",
     "format": "Format A2 Print & Digital",
-    "imageUrl": "https://drive.google.com/file/d/15wDbdTjVPLbLqdYFk4olD1bGYNHUVmbJ/view?usp=sharing",
-    "posterUrl": "https://drive.google.com/thumbnail?id=15wDbdTjVPLbLqdYFk4olD1bGYNHUVmbJ&sz=w1200",
+    "imageUrl": "/assets/creations/affiche-toussaint.webp",
+    "posterUrl": "/assets/creations/affiche-toussaint.webp",
     "tools": [
       "Photoshop",
       "Illustrator",
@@ -67,9 +67,117 @@
       "Direction Artistique",
       "Composition Visuelle"
     ],
-    "description": "Affiche officielle de communication créée pour la période des congés de Toussaint des classes préparatoires scientifiques de l'INP-HB Yamoussoukro (Caïmans Techno 25). Équilibre visuel, palette chromatique soignée et hiérarchisation graphique des messages.",
+    "description": "Affiche officielle de communication créée pour les congés de Toussaint 2026 au nom de l'équipe du court-métrage \"Le Prix du Prestige\" (INP-HB). Équilibre visuel, lumière dorée et hiérarchisation graphique des messages.",
     "featured": true,
     "createdAt": "2026-11-05T17:02:00.000Z"
+  },
+  {
+    "id": "pub-pressea-goyave",
+    "category": "images",
+    "title": "Visuel Publicitaire — Présséa Fresh Goyave",
+    "client": "Concept Publicitaire · Studio Créatif",
+    "year": "2026",
+    "format": "Format Digital & Social Ads",
+    "imageUrl": "/assets/creations/pub-pressea-goyave.webp",
+    "posterUrl": "/assets/creations/pub-pressea-goyave.webp",
+    "tools": [
+      "Photoshop",
+      "Photomontage",
+      "Retouche & Éclairage",
+      "Direction Artistique"
+    ],
+    "description": "Création publicitaire de produit autour de la boisson Présséa Fresh Goyave : composition dynamique avec éclaboussures de jus, fruits en premier/arrière-plan, gestion des flous de mouvement et éclairage produit.",
+    "featured": true,
+    "createdAt": "2026-11-06T10:00:00.000Z"
+  },
+  {
+    "id": "couverture-cours-mp2i",
+    "category": "images",
+    "title": "Couverture — Recueil de Cours & TD MP2I (Algo & C)",
+    "client": "CPGE MP2I · INP-HB",
+    "year": "2026",
+    "format": "Format A4 Couverture PDF",
+    "imageUrl": "/assets/creations/couverture-cours-mp2i.webp",
+    "posterUrl": "/assets/creations/couverture-cours-mp2i.webp",
+    "tools": [
+      "Photoshop",
+      "Typographie",
+      "Composition Visuelle",
+      "Édition PDF"
+    ],
+    "description": "Création graphique de la page de garde du recueil de supports de cours et TD d'algorithmique et de langage C pour les étudiants de CPGE MP2I (INP-HB).",
+    "featured": true,
+    "createdAt": "2026-11-06T10:05:00.000Z"
+  },
+  {
+    "id": "affiche-concours-orientation",
+    "category": "images",
+    "title": "Affiche Digitale — Concours & Orientation (INP-HB / ESATIC)",
+    "client": "Communauté Prépa & Orientation",
+    "year": "2026",
+    "format": "Format WhatsApp & Réseaux",
+    "imageUrl": "/assets/creations/affiche-concours-orientation.webp",
+    "posterUrl": "/assets/creations/affiche-concours-orientation.webp",
+    "tools": [
+      "Photoshop",
+      "Typographie",
+      "Design Social Media"
+    ],
+    "description": "Affiche de communication digitale dédiée à l'orientation et la préparation aux concours (INP-HB, ESATIC), pensée pour une lecture immédiate sur mobile et partage WhatsApp.",
+    "featured": true,
+    "createdAt": "2026-11-06T10:10:00.000Z"
+  },
+  {
+    "id": "prepa-qcm-akthon",
+    "category": "demo",
+    "title": "Prépa QCM (AKThon) — Application Web & Mobile Hors Ligne",
+    "client": "Projet Personnel · Web App",
+    "year": "2026",
+    "demoPhotoUrl": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+    "githubUrl": "https://github.com/BLURDVNIXL/AKThon",
+    "liveUrl": "https://ak-thon.vercel.app",
+    "stack": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "PWA Hors Ligne",
+      "Répétition Espacée"
+    ],
+    "tools": [
+      "HTML / CSS",
+      "JavaScript",
+      "UI Responsive",
+      "Vercel"
+    ],
+    "description": "Application web et mobile fonctionnant hors ligne pour la préparation QCM en développement, IA et cybersécurité : diagnostic personnel, simulation d'épreuve chronométrée, entraînement ciblé et répétition espacée.",
+    "featured": true,
+    "createdAt": "2026-11-13T13:29:00.000Z"
+  },
+  {
+    "id": "blv-abidjan-3d",
+    "category": "demo",
+    "title": "BLV (Babi Life Vibes) — Simulation Urbaine 3D d'Abidjan",
+    "client": "Projet R&D · 3D & Web",
+    "year": "2026",
+    "demoPhotoUrl": "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1200&q=80",
+    "githubUrl": "https://github.com/BLURDVNIXL/BLV-project",
+    "liveUrl": "https://github.com/BLURDVNIXL/BLV-project",
+    "stack": [
+      "React 19",
+      "TypeScript",
+      "Three.js",
+      "C++ / WebAssembly",
+      "PWA"
+    ],
+    "tools": [
+      "React",
+      "TypeScript",
+      "Three.js",
+      "C++ / Wasm"
+    ],
+    "description": "Prototype de jeu de simulation de vie urbaine en 3D inspiré d'Abidjan (13 communes, lagune Ébrié, ponts et génération procédurale par chunks) combinant Three.js, moteur physique C++/WebAssembly et interface React/TypeScript.",
+    "featured": true,
+    "createdAt": "2026-11-19T23:35:00.000Z"
   },
   {
     "id": "algo-binomage-mj",

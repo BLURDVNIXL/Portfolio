@@ -51,6 +51,8 @@
       "nda.adjiri25@inphb.ci"
     ],
     "github": "https://github.com/BLURDVNIXL",
+    "linkedin": "https://www.linkedin.com/in/adjiri-daniel-109b94346/",
+    "youtube": "https://www.youtube.com/@4xdvniel",
     "location": "INP-HB, Yamoussoukro / Abidjan, Côte d'Ivoire"
   },
   "cv": {
@@ -107,19 +109,19 @@
     "skills": [
       {
         "category": "Programmation",
-        "items": "Python · C · OCaml · SQL · JS"
+        "items": "Python · C · OCaml · SQL · JS / TS"
+      },
+      {
+        "category": "Web & Prototypes",
+        "items": "HTML / CSS · React · Vite · Three.js · PWA"
       },
       {
         "category": "Création & PAO",
-        "items": "After Effects · Photoshop · Montage"
+        "items": "Photoshop · Illustrator · After Effects · Premiere Pro"
       },
       {
-        "category": "Outils & Systèmes",
-        "items": "Git · Linux · Vite · Three.js"
-      },
-      {
-        "category": "Langues",
-        "items": "Français (maternelle) · Anglais"
+        "category": "Outils & Langues",
+        "items": "Git · Linux · Français (maternelle) · Anglais"
       }
     ]
   }

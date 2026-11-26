@@ -132,12 +132,31 @@ export function initPortfolioSync() {
       }
     }
 
-    // 6. Section Contact - GitHub & Localisation
+    // 6. Section Contact - GitHub, LinkedIn, YouTube & Localisation
     if (profile.github) {
       const elGithub = document.getElementById('contact-github-link');
       if (elGithub) {
         elGithub.href = profile.github;
-        elGithub.textContent = profile.github.replace(/^https?:\/\//, '');
+        const label = elGithub.querySelector('span');
+        if (label) {
+          label.textContent = profile.github.replace(/^https?:\/\//, '');
+        } else {
+          elGithub.textContent = profile.github.replace(/^https?:\/\//, '');
+        }
+      }
+    }
+
+    if (profile.linkedin) {
+      const elLinkedin = document.getElementById('contact-linkedin-link');
+      if (elLinkedin) {
+        elLinkedin.href = profile.linkedin;
+      }
+    }
+
+    if (profile.youtube) {
+      const elYoutube = document.getElementById('contact-youtube-link');
+      if (elYoutube) {
+        elYoutube.href = profile.youtube;
       }
     }
 
