@@ -65,7 +65,7 @@ export function initPortfolioSync() {
   function applyProfileConfig(profile) {
     if (!profile) return;
 
-    // 1. Hero 3D - Tagline (ex: "Élève-Ingénieur CPGE MP2I / MPI · INP-HB")
+    // 1. Hero 3D - Tagline (ex: "Étudiant en CPGE MPI · INP-HB")
     if (profile.heroTagline) {
       const elTagline = document.getElementById('hero-tagline');
       if (elTagline) {
@@ -100,8 +100,8 @@ export function initPortfolioSync() {
     const elCap = document.getElementById('hero-cap');
     if (elCap && (profile.heroSubtitle || profile.heroBio || profile.name)) {
       const name = profile.name || 'ADJIRI N’DA ÉLIE DANIEL';
-      const sub = profile.heroSubtitle || `${name} — Développeur full-stack & créatif audiovisuel.`;
-      const bio = profile.heroBio || 'Je construis des expériences qui vivent.';
+      const sub = profile.heroSubtitle || `${name} — Sites Web, Design Graphique & Prototypes.`;
+      const bio = profile.heroBio || 'Sites vitrines modernes, affiches sur mesure et petits MVP rapides.';
       elCap.innerHTML = `<strong>${escapeHtml(sub)}</strong><br /><span>${escapeHtml(bio)}</span>`;
     }
 

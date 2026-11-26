@@ -62,6 +62,12 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+function youtubeImgFallbackAttr(ytId) {
+  const safeId = escapeHtml(ytId || '');
+  const handler = "if(this.dataset.yt&&!this.dataset.fb1){this.dataset.fb1='1';this.src='https://img.youtube.com/vi/'+this.dataset.yt+'/sddefault.jpg';}else if(this.dataset.yt&&!this.dataset.fb2){this.dataset.fb2='1';this.src='https://img.youtube.com/vi/'+this.dataset.yt+'/hqdefault.jpg';}else{this.onerror=null;this.src='/icons/icon.svg';}";
+  return `data-yt="${safeId}" onerror="${handler}"`;
+}
+
 function renderVideoCard(item) {
   const rawVideo = item.videoUrl || item.youtubeUrl || item.youtubeId || '';
   const videoRes = resolveMediaPreview(rawVideo);
@@ -73,7 +79,7 @@ function renderVideoCard(item) {
   return `
     <article class="project-card-unique" data-id="${item.id}">
       <div class="card-media-box" data-action="play" data-yt="${ytId}" data-drive="${driveId}" data-id="${item.id}" title="Visionner '${escapeHtml(item.title)}'">
-        <img src="${thumb}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='/icons/icon.svg'" />
+        <img src="${thumb}" alt="${escapeHtml(item.title)}" loading="lazy" ${youtubeImgFallbackAttr(ytId)} />
         <div class="media-play-overlay">
           <div class="play-circle-btn" aria-label="Lire la vidéo">
             <svg viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></svg>
@@ -152,12 +158,13 @@ function renderPosterCard(item) {
 function renderDemoCard(item) {
   const demoRes = resolveMediaPreview(item.demoPhotoUrl || item.imageUrl || item.posterUrl || '');
   const photo = demoRes.thumb || 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80';
+  const ytId = demoRes.isYouTube ? demoRes.id : (item.youtubeId || '');
   const tools = (item.tools || item.stack || []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
 
   return `
     <article class="project-card-unique" data-id="${item.id}">
       <div class="card-media-box" data-action="app" data-id="${item.id}" title="Découvrir '${escapeHtml(item.title)}'">
-        <img src="${photo}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='/icons/icon.svg'" />
+        <img src="${photo}" alt="${escapeHtml(item.title)}" loading="lazy" ${youtubeImgFallbackAttr(ytId)} />
         <div class="media-zoom-overlay">
           <div class="zoom-circle-btn" aria-label="Voir les détails">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>

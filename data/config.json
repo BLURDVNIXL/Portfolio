@@ -36,10 +36,10 @@
     ]
   },
   "profile": {
-    "heroTagline": "Élève",
+    "heroTagline": "Étudiant en CPGE MPI · INP-HB",
     "heroTitle": "Code, design, création.",
-    "heroSubtitle": "ADJIRI N’DA ÉLIE DANIEL",
-    "heroBio": "Je construis des expériences qui vivent.",
+    "heroSubtitle": "ADJIRI N’DA ÉLIE DANIEL — Sites Web, Design Graphique & Prototypes",
+    "heroBio": "Sites vitrines modernes, affiches sur mesure et petits MVP rapides.",
     "name": "ADJIRI N’DA ÉLIE DANIEL",
     "telephones": [
       "+225 07 78 78 02 55",
@@ -122,6 +122,5 @@
         "items": "Français (maternelle) · Anglais"
       }
     ]
-  },
-  "test": "ok"
+  }
 }
